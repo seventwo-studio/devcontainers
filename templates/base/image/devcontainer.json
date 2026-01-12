@@ -4,8 +4,8 @@
   "workspaceFolder": "/workspace",
   "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=delegated",
   "features": {
-    "ghcr.io/seventwo-studio/features/mise-en-place:2.3.2": {},
-    "ghcr.io/seventwo-studio/features/modern-shell:1.6.0": {},
-    "ghcr.io/seventwo-studio/features/onezero-motd:2.0.1": {}
+    "ghcr.io/seventwo-studio/features/mise-en-place:2.3.3": {},
+    "ghcr.io/seventwo-studio/features/modern-shell:1.6.1": {},
+    "ghcr.io/seventwo-studio/features/onezero-motd:2.0.2": {}
   }
 }

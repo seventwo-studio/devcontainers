@@ -1,7 +1,7 @@
 {
   "id": "base",
-  "version": "1.2.1",
-  "name": "OneZero Base Dev Container",
+  "version": "1.2.2",
+  "name": "SevenTwo Base Dev Container",
   "platforms": ["linux/amd64", "linux/arm64"],
-  "keywords": ["onezero", "base"]
+  "keywords": ["seventwo", "base"]
 }
