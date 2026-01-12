@@ -1,4 +1,4 @@
-# CI/CD Test Optimization Guide for OneZero MOTD
+# CI/CD Test Optimization Guide for SevenTwo MOTD
 
 ## Overview
 This guide provides strategies to optimize test execution in CI/CD pipelines.
@@ -82,11 +82,11 @@ strategy:
 1. **Cached Execution**: ~85% faster
    ```bash
    # Before: 7 executions
-   test1=$(/etc/update-motd.d/50-onezero | grep X)
-   test2=$(/etc/update-motd.d/50-onezero | grep Y)
+   test1=$(/etc/update-motd.d/50-seventwo | grep X)
+   test2=$(/etc/update-motd.d/50-seventwo | grep Y)
    
    # After: 1 execution
-   OUTPUT=$(/etc/update-motd.d/50-onezero)
+   OUTPUT=$(/etc/update-motd.d/50-seventwo)
    test1=$(echo "$OUTPUT" | grep X)
    test2=$(echo "$OUTPUT" | grep Y)
    ```
@@ -105,7 +105,7 @@ strategy:
 3. **Early Exit**: Saves unnecessary operations
    ```bash
    # Check critical requirements first
-   [ -f /etc/update-motd.d/50-onezero ] || { echo "Not installed"; exit 1; }
+   [ -f /etc/update-motd.d/50-seventwo ] || { echo "Not installed"; exit 1; }
    ```
 
 ### Container Optimizations

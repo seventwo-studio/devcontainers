@@ -43,7 +43,7 @@ A development container feature that provides network traffic filtering for sand
 
 The sandbox network filter automatically installs an initialization hook at `/usr/local/share/devcontainer-init.d/50-sandbox.sh`.
 
-- **OneZero base image**: Automatically runs all init.d scripts on container startup
+- **SevenTwo base image**: Automatically runs all init.d scripts on container startup
 - **Other images**: Add this to your entrypoint to run init.d scripts:
   ```bash
   if [ -d /usr/local/share/devcontainer-init.d ]; then

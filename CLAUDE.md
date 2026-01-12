@@ -15,7 +15,7 @@ The repository consists of three main component types:
    - `mise-en-place`: Fast polyglot runtime manager (formerly rtx) with persistent volumes for tools and configurations
    - `claude-code`: Claude Code CLI setup via mise, including configuration directories and environment variables
    - `sandbox`: Network traffic filtering using iptables for sandboxed environments with Claude integration
-   - `onezero-motd`: Customizable ASCII Message of the Day with system information
+   - `seventwo-motd`: Customizable ASCII Message of the Day with system information
 
 2. **Images** (`/images/`): Base Docker images
    - `base`: Main development container with essential dev tools

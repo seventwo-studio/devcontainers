@@ -94,7 +94,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        feature: [claude-code, mise-en-place, modern-shell, onezero-motd, sandbox, playwright]
+        feature: [claude-code, mise-en-place, modern-shell, seventwo-motd, sandbox, playwright]
         scenario: [default]
         include:
           # Additional scenarios for claude-code
@@ -135,10 +135,10 @@ jobs:
           - feature: modern-shell
             scenario: neovim-disabled
 
-          # Additional scenarios for onezero-motd
-          - feature: onezero-motd
+          # Additional scenarios for seventwo-motd
+          - feature: seventwo-motd
             scenario: custom-logo
-          - feature: onezero-motd
+          - feature: seventwo-motd
             scenario: disabled
 
           # Additional scenarios for sandbox
@@ -325,7 +325,7 @@ jobs:
               which zsh && echo '✓ zsh found' || echo '✗ zsh not found'
               which mise && echo '✓ mise found' || echo '✗ mise not found'
               # Test MOTD
-              test -f /etc/update-motd.d/50-onezero && echo '✓ MOTD configured' || echo '✗ MOTD not found'
+              test -f /etc/update-motd.d/50-seventwo && echo '✓ MOTD configured' || echo '✗ MOTD not found'
             fi
 
             echo '✓ Template ${{ matrix.template }} built and tested successfully'

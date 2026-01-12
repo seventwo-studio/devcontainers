@@ -1,4 +1,4 @@
-# OneZero Dev Container Features
+# SevenTwo Dev Container Features
 
 A collection of features for development containers.
 

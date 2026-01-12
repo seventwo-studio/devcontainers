@@ -1,5 +1,5 @@
 
-# onezero-base
+# seventwo-base
 
 A comprehensive development container template with modern tools and utilities.
 
@@ -7,7 +7,7 @@ A comprehensive development container template with modern tools and utilities.
 
 | Options Id | Description | Type | Default Value |
 |-----|-----|-----|-----|
-| image | The base image to use for the development container. | string | onezero/base:latest |
+| image | The base image to use for the development container. | string | seventwo/base:latest |
 
 
 

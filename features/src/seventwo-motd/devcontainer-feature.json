@@ -1,9 +1,9 @@
 {
-	"id": "onezero-motd",
-	"version": "2.0.2",
-	"name": "OneZero MOTD",
-	"documentationURL": "https://github.com/seventwo-studio/devcontainers",
-	"description": "Adds OneZero ASCII MOTD (Message of the Day) with customizable message",
+	"id": "seventwo-motd",
+	"version": "1.0.0",
+	"name": "SevenTwo MOTD",
+	"documentationURL": "https://github.com/seventwo-studio/devcontainers/tree/main/features/src/seventwo-motd",
+	"description": "Adds SevenTwo ASCII MOTD (Message of the Day) with customizable message",
 	"options": {
 		"message": {
 			"type": "string",

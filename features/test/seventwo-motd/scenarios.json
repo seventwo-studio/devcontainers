@@ -2,13 +2,13 @@
 	"default": {
 		"image": "mcr.microsoft.com/devcontainers/base:ubuntu",
 		"features": {
-			"ghcr.io/seventwo-studio/features/onezero-motd": {}
+			"ghcr.io/seventwo-studio/features/seventwo-motd": {}
 		}
 	},
 	"custom-logo": {
 		"image": "mcr.microsoft.com/devcontainers/base:ubuntu",
 		"features": {
-			"ghcr.io/seventwo-studio/features/onezero-motd": {
+			"ghcr.io/seventwo-studio/features/seventwo-motd": {
 				"message": "Let's build something awesome!"
 			}
 		}
@@ -16,7 +16,7 @@
 	"disabled": {
 		"image": "mcr.microsoft.com/devcontainers/base:ubuntu",
 		"features": {
-			"ghcr.io/seventwo-studio/features/onezero-motd": {
+			"ghcr.io/seventwo-studio/features/seventwo-motd": {
 				"enable": false
 			}
 		}

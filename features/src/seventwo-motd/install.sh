@@ -8,48 +8,48 @@ ENABLE="${ENABLE:-true}"
 USERNAME="${USERNAME:-${_REMOTE_USER:-root}}"
 
 if [ "${ENABLE}" != "true" ]; then
-    echo "OneZero MOTD is disabled. Skipping installation."
+    echo "SevenTwo MOTD is disabled. Skipping installation."
     exit 0
 fi
 
-echo "Installing OneZero MOTD..."
+echo "Installing SevenTwo MOTD..."
 
 # Create the MOTD script directory
 mkdir -p /etc/update-motd.d
 
 # Create a config file to store the customizable values
-mkdir -p /etc/onezero
+mkdir -p /etc/seventwo
 
 # Create config file with just the message
-cat > /etc/onezero/motd.conf << EOF
-# OneZero MOTD Configuration
+cat > /etc/seventwo/motd.conf << EOF
+# SevenTwo MOTD Configuration
 MESSAGE="$MESSAGE"
 EOF
 
 # Write the MOTD script with hardcoded logo and info
-cat > /etc/update-motd.d/50-onezero << 'MOTD_SCRIPT'
+cat > /etc/update-motd.d/50-seventwo << 'MOTD_SCRIPT'
 #!/bin/bash
 
 # Clear default MOTD if it exists and we have permission
 [ -f /etc/motd ] && [ -w /etc/motd ] && > /etc/motd 2>/dev/null || true
 
 # Load configuration
-if [ -f /etc/onezero/motd.conf ]; then
-    source /etc/onezero/motd.conf
+if [ -f /etc/seventwo/motd.conf ]; then
+    source /etc/seventwo/motd.conf
 fi
 
 # Default message if not set
 MESSAGE="${MESSAGE:-Happy coding!}"
 
 # Hardcoded logo and info
-ASCII_LOGO="   ____              _____              
-  / __ \\            |__  /              
- | |  | |_ __   ___   / / ___ _ __ ___  
- | |  | | '_ \\ / _ \\ / / / _ \\ '__/ _ \\ 
- | |__| | | | |  __// /_|  __/ | | (_) |
-  \\____/|_| |_|\\___/____|\\___|_|  \\___/ "
+ASCII_LOGO="  _____                    _______
+ / ____|                  |__   __|
+| (___   _____   _____ _ __  | |_      _____
+ \\___ \\ / _ \\ \\ / / _ \\ '_ \\ | \\ \\ /\\ / / _ \\
+ ____) |  __/\\ V /  __/ | | || |\\ V  V / (_) |
+|_____/ \\___| \\_/ \\___|_| |_||_| \\_/\\_/ \\___/ "
 
-INFO="Welcome to OneZero Development Container"
+INFO="Welcome to SevenTwo Development Container"
 
 # ANSI color codes
 BLUE='\033[0;34m'
@@ -112,7 +112,7 @@ elif command -v vm_stat &> /dev/null; then
     # macOS - show used/total memory
     PAGE_SIZE=$(sysctl -n hw.pagesize 2>/dev/null)
     MEM_TOTAL=$(sysctl -n hw.memsize 2>/dev/null)
-    
+
     if [ -n "${PAGE_SIZE}" ] && [ -n "${MEM_TOTAL}" ]; then
         VM_STAT=$(vm_stat 2>/dev/null)
         PAGES_FREE=$(echo "$VM_STAT" | awk '/Pages free/ {print $3}' | sed 's/\.//')
@@ -120,12 +120,12 @@ elif command -v vm_stat &> /dev/null; then
         PAGES_INACTIVE=$(echo "$VM_STAT" | awk '/Pages inactive/ {print $3}' | sed 's/\.//')
         PAGES_SPECULATIVE=$(echo "$VM_STAT" | awk '/Pages speculative/ {print $3}' | sed 's/\.//')
         PAGES_WIRED=$(echo "$VM_STAT" | awk '/Pages wired/ {print $4}' | sed 's/\.//')
-        
+
         if [ -n "${PAGES_ACTIVE}" ] && [ -n "${PAGES_WIRED}" ]; then
             MEM_USED=$(( (${PAGES_ACTIVE:-0} + ${PAGES_INACTIVE:-0} + ${PAGES_SPECULATIVE:-0} + ${PAGES_WIRED:-0}) * PAGE_SIZE ))
             MEM_TOTAL_GB=$(echo "scale=1; $MEM_TOTAL / 1024 / 1024 / 1024" | bc 2>/dev/null || echo "N/A")
             MEM_USED_GB=$(echo "scale=1; $MEM_USED / 1024 / 1024 / 1024" | bc 2>/dev/null || echo "N/A")
-            
+
             if [ "${MEM_TOTAL_GB}" != "N/A" ] && [ "${MEM_USED_GB}" != "N/A" ]; then
                 printf "  Memory: %sG / %sG\n" "${MEM_USED_GB}" "${MEM_TOTAL_GB}"
             fi
@@ -149,12 +149,12 @@ printf "${YELLOW}%s${RESET}\n\n" "${MESSAGE}"
 MOTD_SCRIPT
 
 # Make the script executable
-chmod +x /etc/update-motd.d/50-onezero
+chmod +x /etc/update-motd.d/50-seventwo
 
 # Disable other MOTD scripts on Ubuntu/Debian
 if [ -d /etc/update-motd.d ]; then
     for file in /etc/update-motd.d/*; do
-        if [ "$(basename "$file")" != "50-onezero" ] && [ -x "$file" ]; then
+        if [ "$(basename "$file")" != "50-seventwo" ] && [ -x "$file" ]; then
             chmod -x "$file" 2>/dev/null || true
         fi
     done
@@ -175,27 +175,27 @@ fi
 add_motd_to_shell() {
     local rc_file="$1"
     local shell_name="$2"
-    
+
     if [ -f "$rc_file" ] || touch "$rc_file" 2>/dev/null; then
-        if ! grep -q "# OneZero MOTD Display" "$rc_file"; then
+        if ! grep -q "# SevenTwo MOTD Display" "$rc_file"; then
             cat >> "$rc_file" << 'EOF'
 
-# OneZero MOTD Display
+# SevenTwo MOTD Display
 # VS Code terminals often don't run as login shells and may preserve environment
 # variables, so we need special handling for them
-if [ -x /etc/update-motd.d/50-onezero ]; then
+if [ -x /etc/update-motd.d/50-seventwo ]; then
     # Check if we're in VS Code terminal
     if [ -n "$TERM_PROGRAM" ] && [ "$TERM_PROGRAM" = "vscode" ]; then
         # In VS Code, always show MOTD on first command in a new terminal
-        if [ -z "$ONEZERO_MOTD_SHOWN_IN_THIS_TERMINAL" ]; then
-            /etc/update-motd.d/50-onezero
-            export ONEZERO_MOTD_SHOWN_IN_THIS_TERMINAL=1
+        if [ -z "$SEVENTWO_MOTD_SHOWN_IN_THIS_TERMINAL" ]; then
+            /etc/update-motd.d/50-seventwo
+            export SEVENTWO_MOTD_SHOWN_IN_THIS_TERMINAL=1
         fi
     else
         # For regular terminals, use the standard check
-        if [ -z "$ONEZERO_MOTD_SHOWN" ]; then
-            /etc/update-motd.d/50-onezero
-            export ONEZERO_MOTD_SHOWN=1
+        if [ -z "$SEVENTWO_MOTD_SHOWN" ]; then
+            /etc/update-motd.d/50-seventwo
+            export SEVENTWO_MOTD_SHOWN=1
         fi
     fi
 fi
@@ -210,7 +210,7 @@ if [ -n "$USERNAME" ] && [ "$USERNAME" != "root" ]; then
     USER_HOME=$(eval echo ~"$USERNAME")
     add_motd_to_shell "$USER_HOME/.bashrc" "bash"
     add_motd_to_shell "$USER_HOME/.zshrc" "zsh"
-    
+
     # Set ownership
     chown "$USERNAME:$USERNAME" "$USER_HOME/.bashrc" 2>/dev/null || true
     chown "$USERNAME:$USERNAME" "$USER_HOME/.zshrc" 2>/dev/null || true
@@ -226,8 +226,8 @@ add_motd_to_shell "/etc/skel/.bashrc" "bash"
 add_motd_to_shell "/etc/skel/.zshrc" "zsh"
 
 # Test the MOTD
-echo "Testing OneZero MOTD:"
-echo "===================="
-/etc/update-motd.d/50-onezero
+echo "Testing SevenTwo MOTD:"
+echo "======================"
+/etc/update-motd.d/50-seventwo
 
-echo "OneZero MOTD installed successfully!"
+echo "SevenTwo MOTD installed successfully!"

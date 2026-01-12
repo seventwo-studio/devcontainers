@@ -8,9 +8,9 @@ source dev-container-features-test-lib
 # Optimized disabled state validation
 # Single filesystem check for all artifacts
 ARTIFACTS_FOUND=0
-[ -f /etc/update-motd.d/50-onezero ] && ((ARTIFACTS_FOUND++))
-[ -d /etc/onezero ] && ((ARTIFACTS_FOUND++))
-[ -f /etc/onezero/motd.conf ] && ((ARTIFACTS_FOUND++))
+[ -f /etc/update-motd.d/50-seventwo ] && ((ARTIFACTS_FOUND++))
+[ -d /etc/seventwo ] && ((ARTIFACTS_FOUND++))
+[ -f /etc/seventwo/motd.conf ] && ((ARTIFACTS_FOUND++))
 
 # Single test for all conditions
 check "motd artifacts absent" test $ARTIFACTS_FOUND -eq 0

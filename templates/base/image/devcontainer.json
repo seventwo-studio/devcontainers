@@ -6,6 +6,6 @@
   "features": {
     "ghcr.io/seventwo-studio/features/mise-en-place:2.3.3": {},
     "ghcr.io/seventwo-studio/features/modern-shell:1.6.1": {},
-    "ghcr.io/seventwo-studio/features/onezero-motd:2.0.2": {}
+    "ghcr.io/seventwo-studio/features/seventwo-motd:1.0.0": {}
   }
 }

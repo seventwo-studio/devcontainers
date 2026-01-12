@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Shared test helpers for onezero-motd
+# Shared test helpers for seventwo-motd
 # Provides optimized testing utilities with caching and performance features
 
 # Global caches
@@ -33,7 +33,7 @@ EOF
 # Get MOTD output with caching
 get_motd_output() {
     if [ -z "$MOTD_OUTPUT_CACHE" ]; then
-        MOTD_OUTPUT_CACHE=$(/etc/update-motd.d/50-onezero 2>&1)
+        MOTD_OUTPUT_CACHE=$(/etc/update-motd.d/50-seventwo 2>&1)
         MOTD_EXIT_CODE_CACHE=$?
         ((TEST_OPERATIONS++))
     fi
@@ -50,8 +50,8 @@ get_motd_exit_code() {
 
 # Get config content with caching
 get_config_content() {
-    if [ -z "$CONFIG_CONTENT_CACHE" ] && [ -f /etc/onezero/motd.conf ]; then
-        CONFIG_CONTENT_CACHE=$(cat /etc/onezero/motd.conf 2>&1)
+    if [ -z "$CONFIG_CONTENT_CACHE" ] && [ -f /etc/seventwo/motd.conf ]; then
+        CONFIG_CONTENT_CACHE=$(cat /etc/seventwo/motd.conf 2>&1)
         ((TEST_OPERATIONS++))
     fi
     echo "$CONFIG_CONTENT_CACHE"
@@ -62,9 +62,9 @@ check_files_batch() {
     local result=0
     
     # Build batch check command
-    [ -f /etc/update-motd.d/50-onezero ] || result=1
-    [ -x /etc/update-motd.d/50-onezero ] || result=2
-    [ -f /etc/onezero/motd.conf ] || result=3
+    [ -f /etc/update-motd.d/50-seventwo ] || result=1
+    [ -x /etc/update-motd.d/50-seventwo ] || result=2
+    [ -f /etc/seventwo/motd.conf ] || result=3
     
     case $result in
         0) echo "all_files_ok" ;;

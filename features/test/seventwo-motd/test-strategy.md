@@ -1,4 +1,4 @@
-# OneZero MOTD Test Optimization Strategy
+# SevenTwo MOTD Test Optimization Strategy
 
 ## Current Optimizations
 

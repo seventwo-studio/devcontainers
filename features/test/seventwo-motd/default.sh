@@ -12,15 +12,15 @@ else
     # Fallback to basic testing if helpers not available
     echo "# Warning: test-helpers.sh not found, using basic tests" >&2
     
-    check "motd script exists" test -f /etc/update-motd.d/50-onezero
-    check "motd script is executable" test -x /etc/update-motd.d/50-onezero
-    check "config file exists" test -f /etc/onezero/motd.conf
-    check "motd runs successfully" bash -c "/etc/update-motd.d/50-onezero >/dev/null 2>&1"
+    check "motd script exists" test -f /etc/update-motd.d/50-seventwo
+    check "motd script is executable" test -x /etc/update-motd.d/50-seventwo
+    check "config file exists" test -f /etc/seventwo/motd.conf
+    check "motd runs successfully" bash -c "/etc/update-motd.d/50-seventwo >/dev/null 2>&1"
     
     export MOTD_OUTPUT
-    MOTD_OUTPUT=$(/etc/update-motd.d/50-onezero 2>&1)
+    MOTD_OUTPUT=$(/etc/update-motd.d/50-seventwo 2>&1)
     check "motd content" bash -c "
-        echo '\$MOTD_OUTPUT' | grep -q 'OneZero' &&
+        echo '\$MOTD_OUTPUT' | grep -q 'SevenTwo' &&
         echo '\$MOTD_OUTPUT' | grep -q 'System Information' &&
         echo '\$MOTD_OUTPUT' | grep -q 'Date:' &&
         echo '\$MOTD_OUTPUT' | grep -q 'Happy coding'
@@ -51,7 +51,7 @@ check "motd executes successfully" test "$EXIT_CODE" -eq 0
 # Phase 3: Content validation (simplified for reliability)
 OUTPUT=$(get_motd_output)
 # Direct pattern matching without subshell complexity
-if echo "$OUTPUT" | grep -q '____' || echo "$OUTPUT" | grep -q 'OneZero'; then
+if echo "$OUTPUT" | grep -q '____' || echo "$OUTPUT" | grep -q 'SevenTwo'; then
     check "default logo present" true
 else
     echo "MOTD output:"

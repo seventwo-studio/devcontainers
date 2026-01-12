@@ -98,16 +98,16 @@ jobs:
           - feature: modern-shell
             scenario: zsh-plugins-none
           
-          # onezero-motd feature tests
-          - feature: onezero-motd
+          # seventwo-motd feature tests
+          - feature: seventwo-motd
             scenario: default
-          - feature: onezero-motd
+          - feature: seventwo-motd
             scenario: custom-logo
-          - feature: onezero-motd
+          - feature: seventwo-motd
             scenario: disabled
-          - feature: onezero-motd
+          - feature: seventwo-motd
             scenario: edge-cases
-          - feature: onezero-motd
+          - feature: seventwo-motd
             scenario: smoke-test
           
           # sandbox feature tests
