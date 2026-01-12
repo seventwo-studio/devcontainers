@@ -201,7 +201,7 @@ jobs:
             jq ".\"${{ matrix.scenario }}\"" scenarios.json | \
             jq --arg feature "${{ matrix.feature }}" \
               '.features = (.features | to_entries | map(
-                if .key | contains("ghcr.io/onezerocompany/features/" + $feature) then
+                if .key | contains("ghcr.io/seventwo-studio/features/" + $feature) then
                   {key: ("./features/" + $feature), value: .value}
                 else
                   .
@@ -278,14 +278,14 @@ jobs:
               fi
             done
             
-            # Replace all ghcr.io/onezerocompany/features/* with local paths
+            # Replace all ghcr.io/seventwo-studio/features/* with local paths
             # First, create a backup and then use jq to properly modify the JSON structure
             cp .devcontainer/devcontainer.json .devcontainer/devcontainer.json.bak
             
             # Use jq to replace all feature references with local paths
             jq '
               .features |= with_entries(
-                if .key | startswith("ghcr.io/onezerocompany/features/") then
+                if .key | startswith("ghcr.io/seventwo-studio/features/") then
                   # Extract feature name from the key
                   (.key | split("/")[-1] | split(":")[0]) as $feature_name |
                   .key = "./features/" + $feature_name

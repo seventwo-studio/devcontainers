@@ -31,7 +31,7 @@ docker run --rm \
   -v ${{ github.workspace }}/.github/test-fixtures/runner:/workspace \
   -w /workspace \
   -e CI=true \
-  ghcr.io/onezerocompany/runner:latest \
+  ghcr.io/seventwo-studio/runner:latest \
   bash -c "chmod +x ./test-runner.sh && ./test-runner.sh"
 ```
 

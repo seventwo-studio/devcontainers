@@ -3,8 +3,8 @@
 	"name": "Claude Code",
 	"version": "1.6.1",
 	"description": "Claude Code CLI setup via mise (npm package @anthropic-ai/claude-code), including configuration directories and environment variables",
-	"documentationURL": "https://github.com/onezerocompany/devcontainers/tree/main/features/src/claude-code",
-	"licenseURL": "https://github.com/onezerocompany/devcontainers/blob/main/LICENSE",
+	"documentationURL": "https://github.com/seventwo-studio/devcontainers/tree/main/features/src/claude-code",
+	"licenseURL": "https://github.com/seventwo-studio/devcontainers/blob/main/LICENSE",
 	"keywords": [
 		"claude",
 		"claude-code",
@@ -47,7 +47,7 @@
 		}
 	],
 	"installsAfter": [
-		"ghcr.io/onezerocompany/features/modern-shell",
-		"ghcr.io/onezerocompany/features/mise-en-place"
+		"ghcr.io/seventwo-studio/features/modern-shell",
+		"ghcr.io/seventwo-studio/features/mise-en-place"
 	]
 }

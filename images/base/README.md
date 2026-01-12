@@ -200,7 +200,7 @@ The base image can be used directly in VS Code Dev Containers with a `devcontain
 ```json
 {
   "name": "Basic Development Container",
-  "image": "ghcr.io/onezerocompany/base:latest",
+  "image": "ghcr.io/seventwo-studio/base:latest",
   "customizations": {
     "vscode": {
       "settings": {
@@ -216,7 +216,7 @@ The base image can be used directly in VS Code Dev Containers with a `devcontain
 ```json
 {
   "name": "Advanced Development Container",
-  "image": "ghcr.io/onezerocompany/base:latest",
+  "image": "ghcr.io/seventwo-studio/base:latest",
   "features": {
     "ghcr.io/devcontainers/features/python:1": {
       "version": "3.11"
@@ -292,7 +292,7 @@ The base image can be used directly in VS Code Dev Containers with a `devcontain
 ```json
 {
   "name": "Full Development Environment",
-  "image": "ghcr.io/onezerocompany/base:latest",
+  "image": "ghcr.io/seventwo-studio/base:latest",
   "features": {
     "ghcr.io/devcontainers/features/node:1": {
       "nodeGypDependencies": true,
@@ -346,7 +346,7 @@ The base image can be used directly in VS Code Dev Containers with a `devcontain
 ```json
 {
   "name": "Minimal Development",
-  "image": "ghcr.io/onezerocompany/base:latest",
+  "image": "ghcr.io/seventwo-studio/base:latest",
   "customizations": {
     "vscode": {
       "settings": {

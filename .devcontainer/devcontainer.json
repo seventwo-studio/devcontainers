@@ -1,12 +1,12 @@
 {
 	"name": "Zero Dev Container",
-	"image": "ghcr.io/onezerocompany/base",
+	"image": "ghcr.io/seventwo-studio/base",
 	"remoteUser": "zero",
 	"features": {
-		"ghcr.io/onezerocompany/features/mise-en-place:2": {},
-		"ghcr.io/onezerocompany/features/modern-shell:1": {},
-		"ghcr.io/onezerocompany/features/claude-code:1": {},
-		"ghcr.io/onezerocompany/features/sandbox:2": {}
+		"ghcr.io/seventwo-studio/features/mise-en-place:2": {},
+		"ghcr.io/seventwo-studio/features/modern-shell:1": {},
+		"ghcr.io/seventwo-studio/features/claude-code:1": {},
+		"ghcr.io/seventwo-studio/features/sandbox:2": {}
 	},
 	"customizations": {
 		"vscode": {

@@ -10,8 +10,8 @@ This feature requires the `mise-en-place` feature to be installed first, as it u
 
 ```json
 "features": {
-    "ghcr.io/onezerocompany/features/mise-en-place:2": {},
-    "ghcr.io/onezerocompany/features/playwright:1": {}
+    "ghcr.io/seventwo-studio/features/mise-en-place:2": {},
+    "ghcr.io/seventwo-studio/features/playwright:1": {}
 }
 ```
 
@@ -35,8 +35,8 @@ The following environment variables are set:
 
 ```json
 "features": {
-    "ghcr.io/onezerocompany/features/mise-en-place:2": {},
-    "ghcr.io/onezerocompany/features/playwright:1": {}
+    "ghcr.io/seventwo-studio/features/mise-en-place:2": {},
+    "ghcr.io/seventwo-studio/features/playwright:1": {}
 }
 ```
 
@@ -44,8 +44,8 @@ The following environment variables are set:
 
 ```json
 "features": {
-    "ghcr.io/onezerocompany/features/mise-en-place:2": {},
-    "ghcr.io/onezerocompany/features/playwright:1": {
+    "ghcr.io/seventwo-studio/features/mise-en-place:2": {},
+    "ghcr.io/seventwo-studio/features/playwright:1": {
         "browsers": "chromium webkit"
     }
 }
@@ -55,8 +55,8 @@ The following environment variables are set:
 
 ```json
 "features": {
-    "ghcr.io/onezerocompany/features/mise-en-place:2": {},
-    "ghcr.io/onezerocompany/features/playwright:1": {
+    "ghcr.io/seventwo-studio/features/mise-en-place:2": {},
+    "ghcr.io/seventwo-studio/features/playwright:1": {
         "version": "1.40.0",
         "browsers": "chromium firefox webkit"
     }
@@ -67,8 +67,8 @@ The following environment variables are set:
 
 ```json
 "features": {
-    "ghcr.io/onezerocompany/features/mise-en-place:2": {},
-    "ghcr.io/onezerocompany/features/playwright:1": {
+    "ghcr.io/seventwo-studio/features/mise-en-place:2": {},
+    "ghcr.io/seventwo-studio/features/playwright:1": {
         "install_deps": false,
         "browsers": ""
     }

@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Repository Overview
 
-This is a devcontainers repository that provides reusable features, images, and templates for development containers following the official devcontainer specification. The repository is structured to automatically publish components to GitHub Container Registry (ghcr.io/onezerocompany/).
+This is a devcontainers repository that provides reusable features, images, and templates for development containers following the official devcontainer specification. The repository is structured to automatically publish components to GitHub Container Registry (ghcr.io/seventwo-studio/).
 
 ## Architecture
 
@@ -46,8 +46,8 @@ Use semantic versioning (e.g., 1.0.0 → 1.0.1 for patches, 1.1.0 for features, 
 
 ### Publishing
 Publishing is automated via GitHub Actions on push to main. The workflow:
-1. Publishes features to `ghcr.io/onezerocompany/features`
-2. Publishes templates to `ghcr.io/onezerocompany/templates`
+1. Publishes features to `ghcr.io/seventwo-studio/features`
+2. Publishes templates to `ghcr.io/seventwo-studio/templates`
 3. Builds and pushes Docker images with multi-platform support (amd64/arm64)
 4. Pre-builds devcontainer images for templates
 
@@ -64,7 +64,7 @@ Publishing is automated via GitHub Actions on push to main. The workflow:
 1. Create directory: `templates/<template-name>/`
 2. Add `.devcontainer/devcontainer.json`
 3. Add `devcontainer-template.json` metadata
-4. Reference features from `ghcr.io/onezerocompany/features`
+4. Reference features from `ghcr.io/seventwo-studio/features`
 
 **New Image:**
 1. Create directory: `images/<image-name>/`
@@ -84,7 +84,7 @@ All images and features support both `linux/amd64` and `linux/arm64`. The CI use
 
 ## Repository-Specific Conventions
 
-1. All features are published under `ghcr.io/onezerocompany/features`
+1. All features are published under `ghcr.io/seventwo-studio/features`
 2. Use `zero` as the default non-root user (not `vscode` or `node`)
 3. Modern shell tools are configured for both user and root
 4. Features should be composable and work independently

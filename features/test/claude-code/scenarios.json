@@ -2,23 +2,23 @@
 	"default": {
 		"image": "mcr.microsoft.com/devcontainers/base:ubuntu",
 		"features": {
-			"ghcr.io/onezerocompany/features/mise-en-place": {},
-			"ghcr.io/onezerocompany/features/claude-code": {}
+			"ghcr.io/seventwo-studio/features/mise-en-place": {},
+			"ghcr.io/seventwo-studio/features/claude-code": {}
 		}
 	},
 	"with-modern-shell": {
 		"image": "mcr.microsoft.com/devcontainers/base:ubuntu",
 		"features": {
-			"ghcr.io/onezerocompany/features/modern-shell": {},
-			"ghcr.io/onezerocompany/features/mise-en-place": {},
-			"ghcr.io/onezerocompany/features/claude-code": {}
+			"ghcr.io/seventwo-studio/features/modern-shell": {},
+			"ghcr.io/seventwo-studio/features/mise-en-place": {},
+			"ghcr.io/seventwo-studio/features/claude-code": {}
 		}
 	},
 	"custom-versions": {
 		"image": "mcr.microsoft.com/devcontainers/base:ubuntu",
 		"features": {
-			"ghcr.io/onezerocompany/features/mise-en-place": {},
-			"ghcr.io/onezerocompany/features/claude-code": {
+			"ghcr.io/seventwo-studio/features/mise-en-place": {},
+			"ghcr.io/seventwo-studio/features/claude-code": {
 				"claudeCodeVersion": "latest"
 			}
 		}
@@ -26,8 +26,8 @@
 	"custom-config-dir": {
 		"image": "mcr.microsoft.com/devcontainers/base:ubuntu",
 		"features": {
-			"ghcr.io/onezerocompany/features/mise-en-place": {},
-			"ghcr.io/onezerocompany/features/claude-code": {
+			"ghcr.io/seventwo-studio/features/mise-en-place": {},
+			"ghcr.io/seventwo-studio/features/claude-code": {
 				"configDir": "/opt/claude-config"
 			}
 		}
@@ -35,8 +35,8 @@
 	"install-locally": {
 		"image": "mcr.microsoft.com/devcontainers/base:ubuntu",
 		"features": {
-			"ghcr.io/onezerocompany/features/mise-en-place": {},
-			"ghcr.io/onezerocompany/features/claude-code": {
+			"ghcr.io/seventwo-studio/features/mise-en-place": {},
+			"ghcr.io/seventwo-studio/features/claude-code": {
 				"installGlobally": false
 			}
 		}
@@ -44,8 +44,8 @@
 	"specific-version": {
 		"image": "mcr.microsoft.com/devcontainers/base:ubuntu",
 		"features": {
-			"ghcr.io/onezerocompany/features/mise-en-place": {},
-			"ghcr.io/onezerocompany/features/claude-code": {
+			"ghcr.io/seventwo-studio/features/mise-en-place": {},
+			"ghcr.io/seventwo-studio/features/claude-code": {
 				"claudeCodeVersion": "1.0.0"
 			}
 		}

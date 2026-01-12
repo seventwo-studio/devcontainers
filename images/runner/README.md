@@ -84,8 +84,8 @@ docker buildx build --platform linux/amd64,linux/arm64 -t runner:latest .
 # Optimized build with layer caching (recommended for CI)
 docker buildx build \
   --platform linux/amd64,linux/arm64 \
-  --cache-from type=registry,ref=ghcr.io/onezerocompany/runner:buildcache \
-  --cache-to type=registry,ref=ghcr.io/onezerocompany/runner:buildcache,mode=max \
+  --cache-from type=registry,ref=ghcr.io/seventwo-studio/runner:buildcache \
+  --cache-to type=registry,ref=ghcr.io/seventwo-studio/runner:buildcache,mode=max \
   -t runner:latest \
   .
 
@@ -157,7 +157,7 @@ spec:
     spec:
       containers:
       - name: runner
-        image: ghcr.io/onezerocompany/runner:latest
+        image: ghcr.io/seventwo-studio/runner:latest
         env:
         - name: GITHUB_TOKEN
           valueFrom:
@@ -194,7 +194,7 @@ spec:
     spec:
       containers:
       - name: runner
-        image: ghcr.io/onezerocompany/runner:latest
+        image: ghcr.io/seventwo-studio/runner:latest
         securityContext:
           capabilities:
             add:
@@ -220,7 +220,7 @@ version: '3.8'
 
 services:
   github-runner:
-    image: ghcr.io/onezerocompany/runner:latest
+    image: ghcr.io/seventwo-studio/runner:latest
     environment:
       - GITHUB_TOKEN=${GITHUB_TOKEN}
       - REPO_URL=${REPO_URL}
@@ -666,7 +666,7 @@ version: '3.8'
 
 services:
   github-runner:
-    image: ghcr.io/onezerocompany/runner:latest
+    image: ghcr.io/seventwo-studio/runner:latest
     healthcheck:
       test: ["CMD", "pgrep", "-f", "Runner.Listener"]
       interval: 30s

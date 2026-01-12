@@ -16,7 +16,7 @@ A development container feature that provides network traffic filtering for sand
 ```json
 {
   "features": {
-    "ghcr.io/onezerocompany/features/sandbox": {
+    "ghcr.io/seventwo-studio/features/sandbox": {
       "defaultPolicy": "block",
       "allowedDomains": "github.com,*.github.com",
       "blockedDomains": "*.facebook.com,*.twitter.com",
@@ -116,7 +116,7 @@ The feature automatically detects the workspace folder by checking these environ
 ```json
 {
   "features": {
-    "ghcr.io/onezerocompany/features/sandbox": {
+    "ghcr.io/seventwo-studio/features/sandbox": {
       "defaultPolicy": "block",
       "allowClaudeWebFetchDomains": true,
       "allowCommonDevelopment": true,
@@ -130,7 +130,7 @@ The feature automatically detects the workspace folder by checking these environ
 ```json
 {
   "features": {
-    "ghcr.io/onezerocompany/features/sandbox": {
+    "ghcr.io/seventwo-studio/features/sandbox": {
       "defaultPolicy": "allow",
       "blockedDomains": "*.facebook.com,*.twitter.com,*.tiktok.com",
       "logQueries": false
@@ -143,7 +143,7 @@ The feature automatically detects the workspace folder by checking these environ
 ```json
 {
   "features": {
-    "ghcr.io/onezerocompany/features/sandbox": {
+    "ghcr.io/seventwo-studio/features/sandbox": {
       "defaultPolicy": "block",
       "allowClaudeWebFetchDomains": true,
       "claudeSettingsPaths": "/workspace/.claude/settings.json,~/.claude/custom-settings.json"

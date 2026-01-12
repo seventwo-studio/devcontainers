@@ -26,7 +26,7 @@
       "Bash(gh run view:*)",
       "Bash(gh run watch:*)",
       "Bash(gh workflow:*)",
-      "Bash(ghcr.io/onezerocompany/devcontainer:base )",
+      "Bash(ghcr.io/seventwo-studio/devcontainer:base )",
       "Bash(git add:*)",
       "Bash(git checkout:*)",
       "Bash(git commit:*)",

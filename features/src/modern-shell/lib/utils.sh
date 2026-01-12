@@ -67,7 +67,7 @@ check_mise_installed() {
   if ! command -v mise >/dev/null 2>&1; then
     echo "❌ mise is required but not installed!" >&2
     echo "❌ Please install the mise-en-place feature before using modern-shell." >&2
-    echo "❌ Add 'ghcr.io/onezerocompany/features/mise-en-place' to your devcontainer.json features." >&2
+    echo "❌ Add 'ghcr.io/seventwo-studio/features/mise-en-place' to your devcontainer.json features." >&2
     exit 1
   else
     echo "✅ mise is available"

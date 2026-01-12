@@ -12,7 +12,7 @@ Enables Docker inside a Dev Container by installing the Docker CLI and enabling 
 
 ```json
 "features": {
-    "ghcr.io/onezerocompany/features/docker-in-docker:latest": {
+    "ghcr.io/seventwo-studio/features/docker-in-docker:latest": {
         "version": "latest",
         "moby": false
     }
@@ -27,7 +27,7 @@ Comprehensive development utilities with modern CLI tools, shell configurations,
 
 ```json
 "features": {
-    "ghcr.io/onezerocompany/features/common-utils:latest": {
+    "ghcr.io/seventwo-studio/features/common-utils:latest": {
         "defaultShell": "zsh",
         "starship": true,
         "zoxide": true,
@@ -69,7 +69,7 @@ Network traffic filtering for sandboxed environments with domain rule support. C
 
 ```json
 "features": {
-    "ghcr.io/onezerocompany/features/sandbox:latest": {
+    "ghcr.io/seventwo-studio/features/sandbox:latest": {
         "allowedDomains": "api.github.com,*.openai.com",
         "blockedDomains": "*.facebook.com,*.twitter.com",
         "defaultPolicy": "block",

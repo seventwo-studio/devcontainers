@@ -2,19 +2,19 @@
     "default": {
         "image": "debian:bookworm",
         "features": {
-            "ghcr.io/onezerocompany/features/mise-en-place": {}
+            "ghcr.io/seventwo-studio/features/mise-en-place": {}
         }
     },
     "ubuntu": {
         "image": "ubuntu:22.04",
         "features": {
-            "ghcr.io/onezerocompany/features/mise-en-place": {}
+            "ghcr.io/seventwo-studio/features/mise-en-place": {}
         }
     },
     "auto-trust-disabled": {
         "image": "debian:bookworm",
         "features": {
-            "ghcr.io/onezerocompany/features/mise-en-place": {
+            "ghcr.io/seventwo-studio/features/mise-en-place": {
                 "autoTrust": false
             }
         }
@@ -22,7 +22,7 @@
     "deprecated-bun-option": {
         "image": "debian:bookworm",
         "features": {
-            "ghcr.io/onezerocompany/features/mise-en-place": {
+            "ghcr.io/seventwo-studio/features/mise-en-place": {
                 "installBun": true
             }
         }
@@ -30,7 +30,7 @@
     "specific-version": {
         "image": "debian:bookworm",
         "features": {
-            "ghcr.io/onezerocompany/features/mise-en-place": {
+            "ghcr.io/seventwo-studio/features/mise-en-place": {
                 "version": "2024.1.0"
             }
         }
@@ -38,13 +38,13 @@
     "bun-global-test": {
         "image": "debian:bookworm",
         "features": {
-            "ghcr.io/onezerocompany/features/mise-en-place": {}
+            "ghcr.io/seventwo-studio/features/mise-en-place": {}
         }
     },
     "bun-disabled": {
         "image": "debian:bookworm",
         "features": {
-            "ghcr.io/onezerocompany/features/mise-en-place": {
+            "ghcr.io/seventwo-studio/features/mise-en-place": {
                 "installBun": false
             }
         }

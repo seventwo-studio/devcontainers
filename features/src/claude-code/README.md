@@ -6,7 +6,7 @@ Installs Claude Code CLI via mise (as npm package @anthropic-ai/claude-code), in
 
 ```json
 "features": {
-    "ghcr.io/onezerocompany/features/claude-code:1": {}
+    "ghcr.io/seventwo-studio/features/claude-code:1": {}
 }
 ```
 
@@ -47,8 +47,8 @@ This feature requires:
 - **mise**: Must be available in the container (use the mise-en-place feature)
 
 This feature installs after:
-- `ghcr.io/onezerocompany/features/modern-shell` (if used)
-- `ghcr.io/onezerocompany/features/mise-en-place` (required)
+- `ghcr.io/seventwo-studio/features/modern-shell` (if used)
+- `ghcr.io/seventwo-studio/features/mise-en-place` (required)
 
 ## Tools Installed
 
@@ -59,7 +59,7 @@ This feature installs after:
 ### Basic Usage
 ```json
 "features": {
-    "ghcr.io/onezerocompany/features/claude-code:1": {}
+    "ghcr.io/seventwo-studio/features/claude-code:1": {}
 }
 ```
 
@@ -67,7 +67,7 @@ This feature installs after:
 ### Custom Config Directory
 ```json
 "features": {
-    "ghcr.io/onezerocompany/features/claude-code:1": {
+    "ghcr.io/seventwo-studio/features/claude-code:1": {
         "configDir": "/opt/claude-config"
     }
 }

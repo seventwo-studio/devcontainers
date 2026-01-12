@@ -1,4 +1,4 @@
-FROM ghcr.io/onezerocompany/base:latest AS build
+FROM ghcr.io/seventwo-studio/base:latest AS build
 
 ARG TARGETOS
 ARG TARGETARCH
@@ -36,7 +36,7 @@ RUN export RUNNER_ARCH=${TARGETARCH} \
     && chmod +x /usr/local/lib/docker/cli-plugins/docker-buildx
 
 # Playwright build stage - separate for optimal caching
-FROM ghcr.io/onezerocompany/base:latest AS playwright
+FROM ghcr.io/seventwo-studio/base:latest AS playwright
 
 ARG PLAYWRIGHT_VERSION=latest
 ARG USERNAME=zero
@@ -79,7 +79,7 @@ RUN bash -c 'eval "$(mise activate bash)" && \
     playwright install-deps && \
     npm uninstall -g playwright'
 
-FROM ghcr.io/onezerocompany/base:latest AS main
+FROM ghcr.io/seventwo-studio/base:latest AS main
 
 ARG USERNAME=zero
 

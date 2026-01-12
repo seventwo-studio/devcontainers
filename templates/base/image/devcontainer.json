@@ -1,11 +1,11 @@
 {
-  "image": "ghcr.io/onezerocompany/base",
+  "image": "ghcr.io/seventwo-studio/base",
   "remoteUser": "zero",
   "workspaceFolder": "/workspace",
   "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=delegated",
   "features": {
-    "ghcr.io/onezerocompany/features/mise-en-place:2.3.2": {},
-    "ghcr.io/onezerocompany/features/modern-shell:1.6.0": {},
-    "ghcr.io/onezerocompany/features/onezero-motd:2.0.1": {}
+    "ghcr.io/seventwo-studio/features/mise-en-place:2.3.2": {},
+    "ghcr.io/seventwo-studio/features/modern-shell:1.6.0": {},
+    "ghcr.io/seventwo-studio/features/onezero-motd:2.0.1": {}
   }
 }

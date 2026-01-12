@@ -71,7 +71,7 @@ check_mise() {
   if ! command -v mise >/dev/null 2>&1; then
     log_error "mise is required but not installed!"
     log_error "Please install the mise-en-place feature before using claude-code."
-    log_error "Add 'ghcr.io/onezerocompany/features/mise-en-place' to your devcontainer.json features."
+    log_error "Add 'ghcr.io/seventwo-studio/features/mise-en-place' to your devcontainer.json features."
     exit 1
   else
     log_success "mise is available"

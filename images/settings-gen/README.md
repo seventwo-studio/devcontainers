@@ -45,7 +45,7 @@ settings-gen:latest
 # Generate basic DevContainer configuration
 docker run --rm \
   -v $(pwd):/workspace \
-  ghcr.io/onezerocompany/settings-gen:latest \
+  ghcr.io/seventwo-studio/settings-gen:latest \
   generate --template basic
 ```
 
@@ -56,7 +56,7 @@ docker run --rm \
 docker run --rm \
   -v $(pwd):/workspace \
   -v /path/to/templates:/templates \
-  ghcr.io/onezerocompany/settings-gen:latest \
+  ghcr.io/seventwo-studio/settings-gen:latest \
   generate --template /templates/custom.json
 ```
 
@@ -66,7 +66,7 @@ docker run --rm \
 # Validate DevContainer configuration
 docker run --rm \
   -v $(pwd):/workspace \
-  ghcr.io/onezerocompany/settings-gen:latest \
+  ghcr.io/seventwo-studio/settings-gen:latest \
   validate --config /workspace/.devcontainer/devcontainer.json
 ```
 
@@ -79,7 +79,7 @@ docker run --rm \
 docker run --rm \
   -v $(pwd):/workspace \
   -v /var/run/docker.sock:/var/run/docker.sock \
-  ghcr.io/onezerocompany/settings-gen:latest \
+  ghcr.io/seventwo-studio/settings-gen:latest \
   build --workspace-folder /workspace
 ```
 
@@ -89,7 +89,7 @@ docker run --rm \
 # Install DevContainer features
 docker run --rm \
   -v $(pwd):/workspace \
-  ghcr.io/onezerocompany/settings-gen:latest \
+  ghcr.io/seventwo-studio/settings-gen:latest \
   features install --features "node:lts,python:3.11"
 ```
 
@@ -98,13 +98,13 @@ docker run --rm \
 ```bash
 # List available templates
 docker run --rm \
-  ghcr.io/onezerocompany/settings-gen:latest \
+  ghcr.io/seventwo-studio/settings-gen:latest \
   templates list
 
 # Apply template
 docker run --rm \
   -v $(pwd):/workspace \
-  ghcr.io/onezerocompany/settings-gen:latest \
+  ghcr.io/seventwo-studio/settings-gen:latest \
   templates apply --template node
 ```
 
@@ -116,7 +116,7 @@ docker run --rm \
 # Generate minimal configuration
 docker run --rm \
   -v $(pwd):/workspace \
-  ghcr.io/onezerocompany/settings-gen:latest \
+  ghcr.io/seventwo-studio/settings-gen:latest \
   gen.sh --type basic --output /workspace/.devcontainer
 ```
 
@@ -128,7 +128,7 @@ docker run --rm \
   -v $(pwd):/workspace \
   -e FEATURES="node:lts,python:3.11,docker-in-docker" \
   -e EXTENSIONS="ms-python.python,ms-vscode.vscode-typescript-next" \
-  ghcr.io/onezerocompany/settings-gen:latest \
+  ghcr.io/seventwo-studio/settings-gen:latest \
   gen.sh --type advanced --output /workspace/.devcontainer
 ```
 
@@ -139,7 +139,7 @@ docker run --rm \
 docker run --rm \
   -v /path/to/projects:/projects \
   -v /path/to/templates:/templates \
-  ghcr.io/onezerocompany/settings-gen:latest \
+  ghcr.io/seventwo-studio/settings-gen:latest \
   gen.sh --batch --input /projects --template /templates/standard.json
 ```
 
@@ -298,7 +298,7 @@ version: '3.8'
 
 services:
   settings-gen:
-    image: ghcr.io/onezerocompany/settings-gen:latest
+    image: ghcr.io/seventwo-studio/settings-gen:latest
     volumes:
       - ./projects:/workspace
       - ./templates:/templates
@@ -331,7 +331,7 @@ jobs:
       run: |
         docker run --rm \
           -v ${{ github.workspace }}:/workspace \
-          ghcr.io/onezerocompany/settings-gen:latest \
+          ghcr.io/seventwo-studio/settings-gen:latest \
           gen.sh --template /workspace/.devcontainer-template/template.json \
                  --output /workspace/.devcontainer
     
@@ -359,7 +359,7 @@ for project in "$PROJECTS_DIR"/*; do
         docker run --rm \
             -v "$project":/workspace \
             -v "$(dirname "$TEMPLATE_FILE")":/templates \
-            ghcr.io/onezerocompany/settings-gen:latest \
+            ghcr.io/seventwo-studio/settings-gen:latest \
             gen.sh --template /templates/$(basename "$TEMPLATE_FILE") \
                    --output /workspace/.devcontainer
     fi
@@ -387,7 +387,7 @@ done
    # Check template path
    docker run --rm \
      -v $(pwd):/workspace \
-     ghcr.io/onezerocompany/settings-gen:latest \
+     ghcr.io/seventwo-studio/settings-gen:latest \
      ls -la /templates
    ```
 
@@ -397,18 +397,18 @@ done
 # Debug mode
 docker run --rm -it \
   -v $(pwd):/workspace \
-  ghcr.io/onezerocompany/settings-gen:latest \
+  ghcr.io/seventwo-studio/settings-gen:latest \
   sh
 
 # Check DevContainer CLI version
 docker run --rm \
-  ghcr.io/onezerocompany/settings-gen:latest \
+  ghcr.io/seventwo-studio/settings-gen:latest \
   devcontainer --version
 
 # Validate configuration
 docker run --rm \
   -v $(pwd):/workspace \
-  ghcr.io/onezerocompany/settings-gen:latest \
+  ghcr.io/seventwo-studio/settings-gen:latest \
   jq . /workspace/.devcontainer/devcontainer.json
 ```
 

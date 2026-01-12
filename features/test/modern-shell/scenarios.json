@@ -2,13 +2,13 @@
 	"default": {
 		"image": "mcr.microsoft.com/devcontainers/base:ubuntu",
 		"features": {
-			"ghcr.io/onezerocompany/features/modern-shell": {}
+			"ghcr.io/seventwo-studio/features/modern-shell": {}
 		}
 	},
 	"all-enabled": {
 		"image": "mcr.microsoft.com/devcontainers/base:ubuntu",
 		"features": {
-			"ghcr.io/onezerocompany/features/modern-shell": {
+			"ghcr.io/seventwo-studio/features/modern-shell": {
 				"zsh_default": true,
 				"auto_cd": true,
 				"zoxide_cd": true,
@@ -25,7 +25,7 @@
 	"all-disabled": {
 		"image": "mcr.microsoft.com/devcontainers/base:ubuntu",
 		"features": {
-			"ghcr.io/onezerocompany/features/modern-shell": {
+			"ghcr.io/seventwo-studio/features/modern-shell": {
 				"zsh_default": false,
 				"auto_cd": false,
 				"zoxide_cd": false,
@@ -40,7 +40,7 @@
 	"zsh-plugins-none": {
 		"image": "mcr.microsoft.com/devcontainers/base:ubuntu",
 		"features": {
-			"ghcr.io/onezerocompany/features/modern-shell": {
+			"ghcr.io/seventwo-studio/features/modern-shell": {
 				"zsh_plugins": "none"
 			}
 		}
@@ -48,7 +48,7 @@
 	"zsh-plugins-minimal": {
 		"image": "mcr.microsoft.com/devcontainers/base:ubuntu",
 		"features": {
-			"ghcr.io/onezerocompany/features/modern-shell": {
+			"ghcr.io/seventwo-studio/features/modern-shell": {
 				"zsh_plugins": "minimal"
 			}
 		}
@@ -56,7 +56,7 @@
 	"zsh-plugins-full": {
 		"image": "mcr.microsoft.com/devcontainers/base:ubuntu",
 		"features": {
-			"ghcr.io/onezerocompany/features/modern-shell": {
+			"ghcr.io/seventwo-studio/features/modern-shell": {
 				"zsh_plugins": "full"
 			}
 		}
@@ -64,7 +64,7 @@
 	"completions-disabled": {
 		"image": "mcr.microsoft.com/devcontainers/base:ubuntu",
 		"features": {
-			"ghcr.io/onezerocompany/features/modern-shell": {
+			"ghcr.io/seventwo-studio/features/modern-shell": {
 				"enable_completions": false
 			}
 		}
@@ -72,7 +72,7 @@
 	"neovim-disabled": {
 		"image": "mcr.microsoft.com/devcontainers/base:ubuntu",
 		"features": {
-			"ghcr.io/onezerocompany/features/modern-shell": {
+			"ghcr.io/seventwo-studio/features/modern-shell": {
 				"install_neovim": false
 			}
 		}

@@ -25,7 +25,7 @@ This feature provides:
 ```json
 {
   "features": {
-    "ghcr.io/onezerocompany/features/modern-shell": {}
+    "ghcr.io/seventwo-studio/features/modern-shell": {}
   }
 }
 ```
@@ -53,7 +53,7 @@ This feature provides:
 ```json
 {
   "features": {
-    "ghcr.io/onezerocompany/features/modern-shell": {}
+    "ghcr.io/seventwo-studio/features/modern-shell": {}
   }
 }
 ```
@@ -62,7 +62,7 @@ This feature provides:
 ```json
 {
   "features": {
-    "ghcr.io/onezerocompany/features/modern-shell": {
+    "ghcr.io/seventwo-studio/features/modern-shell": {
       "zoxide_cd": true
     }
   }
@@ -73,7 +73,7 @@ This feature provides:
 ```json
 {
   "features": {
-    "ghcr.io/onezerocompany/features/modern-shell": {
+    "ghcr.io/seventwo-studio/features/modern-shell": {
       "zoxide_cd": true,
       "zsh_plugins": "full",
       "custom_aliases": "ll='ls -la';gst='git status';dc='docker compose'"
@@ -86,7 +86,7 @@ This feature provides:
 ```json
 {
   "features": {
-    "ghcr.io/onezerocompany/features/modern-shell": {
+    "ghcr.io/seventwo-studio/features/modern-shell": {
       "starship": false,
       "zsh_plugins": "none"
     }
@@ -98,7 +98,7 @@ This feature provides:
 ```json
 {
   "features": {
-    "ghcr.io/onezerocompany/features/modern-shell": {
+    "ghcr.io/seventwo-studio/features/modern-shell": {
       "alias_ls": true,
       "alias_cat": true,
       "alias_find": false,  // Keep standard find command

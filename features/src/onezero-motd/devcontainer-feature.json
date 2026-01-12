@@ -2,7 +2,7 @@
 	"id": "onezero-motd",
 	"version": "2.0.1",
 	"name": "OneZero MOTD",
-	"documentationURL": "https://github.com/onezerocompany/devcontainers",
+	"documentationURL": "https://github.com/seventwo-studio/devcontainers",
 	"description": "Adds OneZero ASCII MOTD (Message of the Day) with customizable message",
 	"options": {
 		"message": {
@@ -16,8 +16,8 @@
 			"description": "Enable or disable the MOTD display"
 		}
 	},
-	"installsAfter": ["ghcr.io/onezerocompany/features/modern-shell"],
+	"installsAfter": ["ghcr.io/seventwo-studio/features/modern-shell"],
 	"dependsOn": {
-		"ghcr.io/onezerocompany/features/modern-shell": {}
+		"ghcr.io/seventwo-studio/features/modern-shell": {}
 	}
 }
