@@ -113,8 +113,22 @@ fi
 
 echo ""
 
-# Test 4: Basic Development Tools
-echo "Test 4: Testing basic development tools"
+# Test 4: Bun Runtime
+echo "Test 4: Testing Bun runtime"
+echo "---------------------------"
+
+if command -v bun &> /dev/null; then
+    echo "✓ bun is available"
+    bun --version
+else
+    echo "✗ bun not found"
+    exit 1
+fi
+
+echo ""
+
+# Test 5: Basic Development Tools
+echo "Test 5: Testing basic development tools"
 echo "----------------------------------------"
 
 tools=("git" "curl" "wget" "jq" "make" "gcc")
