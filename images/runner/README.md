@@ -8,7 +8,8 @@ This image provides a self-hosted GitHub Actions runner with:
 - GitHub Actions runner (latest version)
 - Docker CLI and Docker Buildx plugin
 - Container hooks for Kubernetes deployments
-- Playwright with multi-browser support (Chromium, Firefox, WebKit, Edge)
+- Playwright with multi-browser support (Chromium, Firefox, WebKit)
+- Bun runtime for fast TypeScript/JavaScript execution
 - Security sandbox support (inherited from base)
 - All development tools from the base image
 
@@ -48,12 +49,12 @@ runner:latest
 - Runner container hooks (v0.7.0)
 - Node.js (v20 LTS)
 - Playwright (latest version)
+- Bun (latest version)
 
 ### Playwright Browsers
 - Chromium (latest stable)
 - Firefox (latest stable)
 - WebKit (latest stable)
-- Microsoft Edge (latest stable)
 
 ### System Users
 - `runner` user (UID 1001) with sudo access
@@ -63,8 +64,7 @@ runner:latest
 - `RUNNER_MANUALLY_TRAP_SIG=1` - Manual signal trapping
 - `ACTIONS_RUNNER_PRINT_LOG_TO_STDOUT=1` - Log output to stdout
 - `ImageOS=ubuntu22` - OS identification for Actions
-- `PLAYWRIGHT_BROWSERS_PATH=/root/.cache/ms-playwright` - Browser cache location (system browsers)
-- `PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1` - Skip downloads during npm install (use system browsers)
+- `PLAYWRIGHT_BROWSERS_PATH=/usr/local/share/ms-playwright` - Browser cache location (system browsers, writable for fallback installs)
 
 ## Usage
 

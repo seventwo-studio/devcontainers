@@ -91,12 +91,10 @@ ENV ACTIONS_RUNNER_PRINT_LOG_TO_STDOUT=1
 ENV ImageOS=ubuntu22
 
 # Playwright configuration
-# Set the browsers path so project installations can find system browsers
-# This will be available system-wide for all users
+# Set the browsers path to a location that's readable by all users
+# Pre-installed browsers will be copied here, and the directory is made writable
+# so projects can install additional browsers if there's a version mismatch
 ENV PLAYWRIGHT_BROWSERS_PATH=/usr/local/share/ms-playwright
-# Skip browser downloads during npm install since browsers are pre-installed
-# Projects should use system browsers instead of downloading their own
-ENV PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1
 
 # Install basic development tools for CI/CD
 COPY scripts/basic-tools.sh /tmp/basic-tools.sh
@@ -119,11 +117,19 @@ RUN curl -fsSL "https://github.com/mikefarah/yq/releases/download/v${YQ_VERSION}
 RUN curl https://mise.run | sh && \
     mv $HOME/.local/bin/mise /usr/local/bin/mise
 
+# Install Bun runtime
+RUN curl -fsSL https://bun.sh/install | bash && \
+    mv /root/.bun/bin/bun /usr/local/bin/ && \
+    chmod +x /usr/local/bin/bun && \
+    bun --version
+
 # Copy only Playwright browsers from playwright stage to system-wide location
 # This makes them available to all users (runner, zero, root)
 # Projects will install their own Playwright version and use these pre-installed browsers
+# Directory is made world-writable so projects can install additional browsers if needed
 RUN mkdir -p /usr/local/share/ms-playwright
 COPY --from=playwright /home/${USERNAME}/.cache/ms-playwright /usr/local/share/ms-playwright
+RUN chmod -R 777 /usr/local/share/ms-playwright
 
 # Install Playwright system dependencies
 # We temporarily install playwright just to run install-deps, then remove it
