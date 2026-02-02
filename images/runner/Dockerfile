@@ -119,6 +119,12 @@ RUN curl -fsSL "https://github.com/mikefarah/yq/releases/download/v${YQ_VERSION}
 RUN curl https://mise.run | sh && \
     mv $HOME/.local/bin/mise /usr/local/bin/mise
 
+# Install Bun runtime
+RUN curl -fsSL https://bun.sh/install | bash && \
+    mv /root/.bun/bin/bun /usr/local/bin/ && \
+    chmod +x /usr/local/bin/bun && \
+    bun --version
+
 # Copy only Playwright browsers from playwright stage to system-wide location
 # This makes them available to all users (runner, zero, root)
 # Projects will install their own Playwright version and use these pre-installed browsers

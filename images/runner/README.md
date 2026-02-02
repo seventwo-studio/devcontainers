@@ -9,6 +9,7 @@ This image provides a self-hosted GitHub Actions runner with:
 - Docker CLI and Docker Buildx plugin
 - Container hooks for Kubernetes deployments
 - Playwright with multi-browser support (Chromium, Firefox, WebKit, Edge)
+- Bun runtime for fast TypeScript/JavaScript execution
 - Security sandbox support (inherited from base)
 - All development tools from the base image
 
@@ -48,6 +49,7 @@ runner:latest
 - Runner container hooks (v0.7.0)
 - Node.js (v20 LTS)
 - Playwright (latest version)
+- Bun (latest version)
 
 ### Playwright Browsers
 - Chromium (latest stable)
