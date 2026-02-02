@@ -189,37 +189,48 @@ jobs:
           # Create a test environment for the specific scenario
           if [ -f "scenarios.json" ]; then
             echo "Found scenarios.json, extracting scenario ${{ matrix.scenario }}"
-            
+
             # Create a proper .devcontainer directory structure
-            mkdir -p .devcontainer
-            
-            # Copy local feature to a location that devcontainer CLI can access
-            mkdir -p .devcontainer/features/${{ matrix.feature }}
-            cp -r ../../src/${{ matrix.feature }}/* .devcontainer/features/${{ matrix.feature }}/
-            
-            # Extract the specific scenario configuration and use local feature
+            mkdir -p .devcontainer/features
+
+            # Copy ALL local features to .devcontainer/features/
+            # This ensures any feature referenced in scenarios.json can be resolved
+            for feature_dir in ../../src/*/; do
+              if [ -d "$feature_dir" ]; then
+                feature_name=$(basename "$feature_dir")
+                mkdir -p ".devcontainer/features/$feature_name"
+                cp -r "$feature_dir"* ".devcontainer/features/$feature_name/"
+              fi
+            done
+
+            # Extract the specific scenario configuration and transform ALL feature references
+            # This handles both short names (e.g., "mise-en-place") and full registry paths
             jq ".\"${{ matrix.scenario }}\"" scenarios.json | \
-            jq --arg feature "${{ matrix.feature }}" \
-              '.features = (.features | to_entries | map(
-                if .key | contains("ghcr.io/seventwo-studio/features/" + $feature) then
-                  {key: ("./features/" + $feature), value: .value}
+            jq '
+              .features = (.features | to_entries | map(
+                # Extract feature name from the key (handles both short names and full paths)
+                (.key | split("/")[-1] | split(":")[0]) as $feature_name |
+                # Check if this is a local feature (not a remote registry other than seventwo-studio)
+                if (.key | startswith("ghcr.io/") | not) or (.key | contains("seventwo-studio")) then
+                  {key: ("./features/" + $feature_name), value: .value}
                 else
                   .
                 end
-              ) | from_entries)' > .devcontainer/devcontainer.json
-            
+              ) | from_entries)
+            ' > .devcontainer/devcontainer.json
+
             echo "Generated .devcontainer/devcontainer.json:"
             cat .devcontainer/devcontainer.json
-            
+
             # Build the devcontainer
             devcontainer build --workspace-folder . --image-name test-${{ matrix.feature }}-${{ matrix.scenario }}
-            
+
             echo "✓ Feature ${{ matrix.feature }} built successfully with scenario ${{ matrix.scenario }}"
-            
+
             # Run the scenario-specific test if it exists
             if [ -f "${{ matrix.scenario }}.sh" ]; then
               echo "Running scenario-specific test script: ${{ matrix.scenario }}.sh"
-              
+
               # Run the test inside the built container
               devcontainer exec --workspace-folder . bash -c "cd /workspaces/*/features/test/${{ matrix.feature }} && ./${{ matrix.scenario }}.sh"
             elif [ -f "test.sh" ]; then
