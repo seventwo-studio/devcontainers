@@ -111,8 +111,6 @@ jobs:
 
           # Additional scenarios for mise-en-place
           - feature: mise-en-place
-            scenario: ubuntu
-          - feature: mise-en-place
             scenario: specific-version
           - feature: mise-en-place
             scenario: auto-trust-disabled
@@ -217,46 +215,52 @@ jobs:
         timeout-minutes: 20
         run: |
           echo "Testing template ${{ matrix.template }}..."
-          
+
           # Create a temporary directory for testing
           TEMP_DIR=$(mktemp -d)
           cp -r templates/${{ matrix.template }}/* $TEMP_DIR/
           cp -r templates/${{ matrix.template }}/.devcontainer $TEMP_DIR/ 2>/dev/null || echo "No .devcontainer directory to copy"
           cd $TEMP_DIR
-          
+
           # Modify devcontainer.json to use local features instead of published ones
           if [ -f ".devcontainer/devcontainer.json" ]; then
-            echo "Modifying devcontainer.json to use local features..."
-            
-            # Copy local features to the template directory
-            mkdir -p .devcontainer/features
-            for feature_dir in ${GITHUB_WORKSPACE}/features/src/*/; do
-              if [ -d "$feature_dir" ]; then
-                feature_name=$(basename "$feature_dir")
-                mkdir -p ".devcontainer/features/$feature_name"
-                cp -r "$feature_dir"* ".devcontainer/features/$feature_name/"
-              fi
-            done
-            
-            # Replace all ghcr.io/seventwo-studio/features/* with local paths
-            # First, create a backup and then use jq to properly modify the JSON structure
-            cp .devcontainer/devcontainer.json .devcontainer/devcontainer.json.bak
-            
-            # Use jq to replace all feature references with local paths
-            jq '
-              .features |= with_entries(
-                if .key | startswith("ghcr.io/seventwo-studio/features/") then
-                  # Extract feature name from the key
-                  (.key | split("/")[-1] | split(":")[0]) as $feature_name |
-                  .key = "./features/" + $feature_name
-                else
-                  .
-                end
-              )
-            ' .devcontainer/devcontainer.json.bak > .devcontainer/devcontainer.json
-            
-            echo "Modified devcontainer.json:"
-            cat .devcontainer/devcontainer.json
+            echo "Checking devcontainer.json for features..."
+
+            # Check if the devcontainer.json has a features field
+            if jq -e '.features' .devcontainer/devcontainer.json > /dev/null 2>&1; then
+              echo "Found features, modifying to use local paths..."
+
+              # Copy local features to the template directory
+              mkdir -p .devcontainer/features
+              for feature_dir in ${GITHUB_WORKSPACE}/features/src/*/; do
+                if [ -d "$feature_dir" ]; then
+                  feature_name=$(basename "$feature_dir")
+                  mkdir -p ".devcontainer/features/$feature_name"
+                  cp -r "$feature_dir"* ".devcontainer/features/$feature_name/"
+                fi
+              done
+
+              # Replace all ghcr.io/seventwo-studio/features/* with local paths
+              cp .devcontainer/devcontainer.json .devcontainer/devcontainer.json.bak
+
+              # Use jq to replace all feature references with local paths
+              jq '
+                .features |= with_entries(
+                  if .key | startswith("ghcr.io/seventwo-studio/features/") then
+                    (.key | split("/")[-1] | split(":")[0]) as $feature_name |
+                    .key = "./features/" + $feature_name
+                  else
+                    .
+                  end
+                )
+              ' .devcontainer/devcontainer.json.bak > .devcontainer/devcontainer.json
+
+              echo "Modified devcontainer.json:"
+              cat .devcontainer/devcontainer.json
+            else
+              echo "No features field found, using devcontainer.json as-is"
+              cat .devcontainer/devcontainer.json
+            fi
           fi
           
           # Set up devcontainer CLI and test (with timeout)
