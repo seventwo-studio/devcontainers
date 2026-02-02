@@ -119,7 +119,7 @@ RUN curl https://mise.run | sh && \
 
 # Install Bun runtime
 RUN curl -fsSL https://bun.sh/install | bash && \
-    mv /root/.bun/bin/bun /usr/local/bin/ && \
+    mv $HOME/.bun/bin/bun /usr/local/bin/ && \
     chmod +x /usr/local/bin/bun && \
     bun --version
 
