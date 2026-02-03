@@ -2,6 +2,9 @@ name: Publish Dev Containers
 
 on:
   workflow_dispatch:
+  schedule:
+    # Run nightly at 3am UTC
+    - cron: "0 3 * * *"
   push:
     branches:
       - main
