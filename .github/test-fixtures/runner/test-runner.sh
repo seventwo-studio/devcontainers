@@ -43,15 +43,9 @@ echo "-------------------------------------------------------"
 # Verify environment variables
 echo "Checking Playwright environment variables:"
 echo "  PLAYWRIGHT_BROWSERS_PATH=$PLAYWRIGHT_BROWSERS_PATH"
-echo "  PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=$PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD"
 
 if [ "$PLAYWRIGHT_BROWSERS_PATH" != "/usr/local/share/ms-playwright" ]; then
     echo "✗ PLAYWRIGHT_BROWSERS_PATH not set correctly"
-    exit 1
-fi
-
-if [ "$PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD" != "1" ]; then
-    echo "✗ PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD not set correctly"
     exit 1
 fi
 
@@ -113,8 +107,22 @@ fi
 
 echo ""
 
-# Test 4: Basic Development Tools
-echo "Test 4: Testing basic development tools"
+# Test 4: Bun Runtime
+echo "Test 4: Testing Bun runtime"
+echo "---------------------------"
+
+if command -v bun &> /dev/null; then
+    echo "✓ bun is available"
+    bun --version
+else
+    echo "✗ bun not found"
+    exit 1
+fi
+
+echo ""
+
+# Test 5: Basic Development Tools
+echo "Test 5: Testing basic development tools"
 echo "----------------------------------------"
 
 tools=("git" "curl" "wget" "jq" "make" "gcc")
