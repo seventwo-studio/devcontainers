@@ -18,10 +18,11 @@ test.describe('Playwright Browser Tests', () => {
     expect(browsersPath).toBe('/usr/local/share/ms-playwright');
     console.log(`✓ PLAYWRIGHT_BROWSERS_PATH correctly set to: ${browsersPath}`);
 
-    // Check that PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD is set
+    // PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD should NOT be set
+    // This allows projects to install additional browser versions if there's a version mismatch
     const skipDownload = process.env.PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD;
-    expect(skipDownload).toBe('1');
-    console.log(`✓ PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD correctly set to: ${skipDownload}`);
+    expect(skipDownload).toBeUndefined();
+    console.log(`✓ PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD correctly unset (allows version flexibility)`);
   });
 
   test('should execute JavaScript in page', async ({ page, browserName }) => {
