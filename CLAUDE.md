@@ -49,6 +49,7 @@ All commits that should trigger a release **must** use a scoped conventional com
 
 | Scope | Component | Path |
 |---|---|---|
+| `base` | Base image | `images/base` |
 | `claude-code` | Claude Code feature | `features/src/claude-code` |
 | `mise-en-place` | Mise-en-place feature | `features/src/mise-en-place` |
 | `modern-shell` | Modern Shell feature | `features/src/modern-shell` |
