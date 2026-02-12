@@ -1,7 +1,7 @@
 {
 	"id": "claude-code",
 	"name": "Claude Code",
-	"version": "1.6.2",
+	"version": "2.0.0",
 	"description": "Claude Code CLI setup via mise (npm package @anthropic-ai/claude-code), including configuration directories and environment variables",
 	"documentationURL": "https://github.com/seventwo-studio/devcontainers/tree/main/features/src/claude-code",
 	"licenseURL": "https://github.com/seventwo-studio/devcontainers/blob/main/LICENSE",
