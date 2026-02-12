@@ -1,7 +1,7 @@
 {
   "features/src/claude-code": "1.6.2",
   "features/src/mise-en-place": "2.3.3",
-  "features/src/modern-shell": "1.6.1",
+  "features/src/modern-shell": "1.7.0",
   "features/src/playwright": "1.3.3",
   "features/src/sandbox": "3.0.2",
   "features/src/seventwo-motd": "1.0.0",

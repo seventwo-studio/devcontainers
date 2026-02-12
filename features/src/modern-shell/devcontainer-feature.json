@@ -1,7 +1,7 @@
 {
 	"id": "modern-shell",
 	"name": "Modern Shell",
-	"version": "1.6.1",
+	"version": "1.7.0",
 	"description": "A modern shell environment with Zsh, Starship prompt, and essential utilities for a productive development experience.",
 	"documentationURL": "https://github.com/seventwo-studio/devcontainers/tree/main/features/src/modern-shell",
 	"licenseURL": "https://github.com/seventwo-studio/devcontainers/blob/main/LICENSE",
@@ -45,7 +45,11 @@
 		},
 		"zsh_plugins": {
 			"type": "string",
-			"enum": ["none", "minimal", "full"],
+			"enum": [
+				"none",
+				"minimal",
+				"full"
+			],
 			"default": "minimal",
 			"description": "Zsh plugin preset: none, minimal (syntax highlighting, autosuggestions), or full (includes more plugins)"
 		},
