@@ -1,0 +1,245 @@
+name: Release Please
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+  packages: write
+  pull-requests: write
+
+jobs:
+  release-please:
+    name: Release Please
+    runs-on: ubuntu-latest
+    outputs:
+      releases_created: ${{ steps.release.outputs.releases_created }}
+      claude-code--release_created: ${{ steps.release.outputs['features/src/claude-code--release_created'] }}
+      mise-en-place--release_created: ${{ steps.release.outputs['features/src/mise-en-place--release_created'] }}
+      modern-shell--release_created: ${{ steps.release.outputs['features/src/modern-shell--release_created'] }}
+      playwright--release_created: ${{ steps.release.outputs['features/src/playwright--release_created'] }}
+      sandbox--release_created: ${{ steps.release.outputs['features/src/sandbox--release_created'] }}
+      seventwo-motd--release_created: ${{ steps.release.outputs['features/src/seventwo-motd--release_created'] }}
+      template-base--release_created: ${{ steps.release.outputs['templates/base--release_created'] }}
+    steps:
+      - name: Release Please
+        id: release
+        uses: googleapis/release-please-action@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+  # Check if any feature was released
+  check-releases:
+    name: Check Releases
+    runs-on: ubuntu-latest
+    needs: [release-please]
+    if: needs.release-please.outputs.releases_created == 'true'
+    outputs:
+      any_feature_released: ${{ steps.check.outputs.any_feature_released }}
+      any_template_released: ${{ steps.check.outputs.any_template_released }}
+    steps:
+      - name: Check which components were released
+        id: check
+        run: |
+          ANY_FEATURE="false"
+          ANY_TEMPLATE="false"
+
+          if [[ "${{ needs.release-please.outputs['claude-code--release_created'] }}" == "true" ]] || \
+             [[ "${{ needs.release-please.outputs['mise-en-place--release_created'] }}" == "true" ]] || \
+             [[ "${{ needs.release-please.outputs['modern-shell--release_created'] }}" == "true" ]] || \
+             [[ "${{ needs.release-please.outputs['playwright--release_created'] }}" == "true" ]] || \
+             [[ "${{ needs.release-please.outputs['sandbox--release_created'] }}" == "true" ]] || \
+             [[ "${{ needs.release-please.outputs['seventwo-motd--release_created'] }}" == "true" ]]; then
+            ANY_FEATURE="true"
+          fi
+
+          if [[ "${{ needs.release-please.outputs['template-base--release_created'] }}" == "true" ]]; then
+            ANY_TEMPLATE="true"
+          fi
+
+          echo "any_feature_released=$ANY_FEATURE" >> "$GITHUB_OUTPUT"
+          echo "any_template_released=$ANY_TEMPLATE" >> "$GITHUB_OUTPUT"
+
+  # Publish all features
+  publish-features:
+    name: Publish All Features
+    runs-on: ubuntu-latest
+    needs: [check-releases]
+    if: needs.check-releases.outputs.any_feature_released == 'true'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Publish Features
+        uses: devcontainers/action@v1
+        with:
+          publish-features: "true"
+          base-path-to-features: "./features/src"
+          generate-docs: "true"
+          disable-repo-tagging: true
+          oci-registry: ghcr.io
+          features-namespace: seventwo-studio/features
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # Test all features and scenarios
+  test-features:
+    name: Test ${{ matrix.feature }} - ${{ matrix.scenario }}
+    runs-on: ubuntu-latest
+    needs: [publish-features]
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # claude-code feature tests
+          - feature: claude-code
+            scenario: default
+          - feature: claude-code
+            scenario: custom-config-dir
+          - feature: claude-code
+            scenario: custom-versions
+          - feature: claude-code
+            scenario: install-locally
+          - feature: claude-code
+            scenario: specific-version
+          - feature: claude-code
+            scenario: with-modern-shell
+
+          # mise-en-place feature tests
+          - feature: mise-en-place
+            scenario: default
+          - feature: mise-en-place
+            scenario: auto-trust-disabled
+          - feature: mise-en-place
+            scenario: cache-disabled
+          - feature: mise-en-place
+            scenario: deprecated-bun-option
+          - feature: mise-en-place
+            scenario: specific-version
+          - feature: mise-en-place
+            scenario: build-cache-copy
+
+          # modern-shell feature tests
+          - feature: modern-shell
+            scenario: default
+          - feature: modern-shell
+            scenario: all-enabled
+          - feature: modern-shell
+            scenario: all-disabled
+          - feature: modern-shell
+            scenario: completions-disabled
+          - feature: modern-shell
+            scenario: neovim-disabled
+          - feature: modern-shell
+            scenario: zsh-plugins-full
+          - feature: modern-shell
+            scenario: zsh-plugins-minimal
+          - feature: modern-shell
+            scenario: zsh-plugins-none
+
+          # seventwo-motd feature tests
+          - feature: seventwo-motd
+            scenario: default
+          - feature: seventwo-motd
+            scenario: custom-logo
+          - feature: seventwo-motd
+            scenario: disabled
+          - feature: seventwo-motd
+            scenario: edge-cases
+          - feature: seventwo-motd
+            scenario: smoke-test
+
+          # sandbox feature tests
+          - feature: sandbox
+            scenario: default
+          - feature: sandbox
+            scenario: allow-policy
+          - feature: sandbox
+            scenario: claude-disabled
+          - feature: sandbox
+            scenario: claude-integration
+          - feature: sandbox
+            scenario: custom-domains
+          - feature: sandbox
+            scenario: docker-enabled
+          - feature: sandbox
+            scenario: logging-disabled
+          - feature: sandbox
+            scenario: network-blocking
+          - feature: sandbox
+            scenario: strict-mode
+          - feature: sandbox
+            scenario: wildcard-test
+
+          # playwright feature tests
+          - feature: playwright
+            scenario: default
+          - feature: playwright
+            scenario: node_only
+          - feature: playwright
+            scenario: all_browsers
+          - feature: playwright
+            scenario: python_support
+          - feature: playwright
+            scenario: specific_version
+          - feature: playwright
+            scenario: no_browsers
+          - feature: playwright
+            scenario: ubuntu
+          - feature: playwright
+            scenario: multi_language
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install devcontainer CLI
+        run: npm install -g @devcontainers/cli
+
+      - name: Run test for ${{ matrix.feature }} - ${{ matrix.scenario }}
+        run: |
+          cd features
+          devcontainer features test \
+            --features ${{ matrix.feature }} \
+            --skip-autogenerated \
+            --filter ${{ matrix.scenario }}
+
+  # Publish all templates
+  publish-templates:
+    name: Publish All Templates
+    runs-on: ubuntu-latest
+    needs: [check-releases, publish-features]
+    if: |
+      always() &&
+      needs.check-releases.outputs.any_template_released == 'true' &&
+      (needs.publish-features.result == 'success' || needs.publish-features.result == 'skipped')
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Publish All Templates
+        uses: devcontainers/action@v1
+        with:
+          publish-templates: "true"
+          base-path-to-templates: "./templates"
+          generate-docs: "true"
+          disable-repo-tagging: true
+          oci-registry: ghcr.io
+          templates-namespace: seventwo-studio/templates
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -38,27 +38,64 @@ cd features/test/modern-shell
 ```
 
 ### Version Management
-When modifying any feature or template, always update the version in:
-- Features: `features/src/<feature-name>/devcontainer-feature.json`
-- Templates: `templates/<template-name>/devcontainer-template.json`
+**Do not manually bump versions.** Versioning is fully automated by [release-please](https://github.com/googleapis/release-please). Versions are determined from conventional commit messages merged to `main`.
 
-Use semantic versioning (e.g., 1.0.0 → 1.0.1 for patches, 1.1.0 for features, 2.0.0 for breaking changes).
+#### Conventional Commit Format
+All commits that should trigger a release **must** use a scoped conventional commit message:
+
+```
+<type>(<scope>): <description>
+```
+
+| Scope | Component | Path |
+|---|---|---|
+| `claude-code` | Claude Code feature | `features/src/claude-code` |
+| `mise-en-place` | Mise-en-place feature | `features/src/mise-en-place` |
+| `modern-shell` | Modern Shell feature | `features/src/modern-shell` |
+| `playwright` | Playwright feature | `features/src/playwright` |
+| `sandbox` | Sandbox feature | `features/src/sandbox` |
+| `seventwo-motd` | SevenTwo MOTD feature | `features/src/seventwo-motd` |
+| `template-base` | Base template | `templates/base` |
+
+#### Bump Rules
+- `fix(scope):` → **patch** bump (e.g., 1.0.0 → 1.0.1)
+- `feat(scope):` → **minor** bump (e.g., 1.0.0 → 1.1.0)
+- `feat!(scope):` or `BREAKING CHANGE:` footer → **major** bump (e.g., 1.0.0 → 2.0.0)
+- `chore:`, `ci:`, or unscoped commits → **no release**
+
+#### Examples
+```bash
+# Patch: bug fix to sandbox
+fix(sandbox): correct iptables rule ordering for Docker networks
+
+# Minor: new feature in modern-shell
+feat(modern-shell): add fzf integration for history search
+
+# Major: breaking change to mise-en-place
+feat!(mise-en-place): rename volume mount paths
+
+# Multi-component: when a feature change affects the template
+feat(modern-shell): add fzf integration for history search
+feat(template-base): update to latest modern-shell with fzf
+```
+
+#### Template Bumps
+When changing a feature that is used by a template, include an additional scoped commit for `template-base` so the template version is also bumped.
 
 ### Publishing
-Publishing is automated via GitHub Actions on push to main. The workflow:
-1. Publishes features to `ghcr.io/seventwo-studio/features`
-2. Publishes templates to `ghcr.io/seventwo-studio/templates`
-3. Builds and pushes Docker images with multi-platform support (amd64/arm64)
-4. Pre-builds devcontainer images for templates
+- **Features and templates** are published automatically when release-please merges a release PR and creates a GitHub Release (triggered by conventional commits to `main`)
+- **Docker images** (base, runner, settings-gen) are built on a nightly schedule (3am UTC) and via manual workflow dispatch
+- Pre-built devcontainer images for templates are also built on the nightly/manual schedule
 
 ### Adding Components
 
 **New Feature:**
 1. Create directory: `features/src/<feature-name>/`
-2. Add `devcontainer-feature.json` with metadata
+2. Add `devcontainer-feature.json` with metadata (set version to `0.1.0`)
 3. Add `install.sh` installation script
-4. Create tests in `features/test/<feature-name>/`
-5. Update version when making changes
+4. Add `version.txt` with the initial version (e.g., `0.1.0`)
+5. Create tests in `features/test/<feature-name>/`
+6. Add the component to `release-please-config.json` and `.release-please-manifest.json`
 
 **New Template:**
 1. Create directory: `templates/<template-name>/`
@@ -88,7 +125,7 @@ All images and features support both `linux/amd64` and `linux/arm64`. The CI use
 2. Use `zero` as the default non-root user (not `vscode` or `node`)
 3. Modern shell tools are configured for both user and root
 4. Features should be composable and work independently
-5. Always bump versions when making any changes to features or templates
+5. Never manually bump versions — use conventional commits and let release-please handle it
 
 ## Workflow and Best Practices
 
@@ -97,4 +134,9 @@ All images and features support both `linux/amd64` and `linux/arm64`. The CI use
 
 ## Release Management
 
-- Whenever we bump a feature we should also bump the templates that use them
+- Releases are managed by [release-please](https://github.com/googleapis/release-please) via manifest mode
+- Config: `release-please-config.json` — defines components, release types, and extra-files
+- Manifest: `.release-please-manifest.json` — tracks current versions (updated automatically by release PRs)
+- Each component gets its own release PR (e.g., "chore(main): release modern-shell 1.7.0")
+- Tags follow the pattern `<component>-v<version>` (e.g., `modern-shell-v1.7.0`)
+- When changing a feature used by a template, include an additional scoped commit for `template-base`
