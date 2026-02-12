@@ -302,6 +302,37 @@ jobs:
             ghcr.io/seventwo-studio/runner:latest \
             bash -c "chmod +x ./test-runner.sh && ./test-runner.sh"
 
+  # Test runner Docker image (Expo + Maestro)
+  test-runner-expo:
+    name: Test runner Docker Image (Expo + Maestro)
+    runs-on: ubuntu-latest
+    needs: [publish-runner]
+    permissions:
+      contents: read
+      packages: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Pull runner image
+        run: docker pull ghcr.io/seventwo-studio/runner:latest
+
+      - name: Run Expo + Maestro integration tests
+        run: |
+          docker run --rm \
+            -v ${{ github.workspace }}/.github/test-fixtures/runner-expo:/workspace \
+            -w /workspace \
+            -e CI=true \
+            ghcr.io/seventwo-studio/runner:latest \
+            bash -c "chmod +x ./test-expo-runner.sh && ./test-expo-runner.sh"
+
   # Build settings-gen Docker image
   publish-settings-gen:
     name: Build and Push settings-gen Docker Image

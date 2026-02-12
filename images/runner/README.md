@@ -10,6 +10,8 @@ This image provides a self-hosted GitHub Actions runner with:
 - Container hooks for Kubernetes deployments
 - Playwright with multi-browser support (Chromium, Firefox, WebKit)
 - Bun runtime for fast TypeScript/JavaScript execution
+- Java 17 JRE (headless) for tooling that requires a JVM
+- Maestro CLI for mobile/web E2E testing
 - Security sandbox support (inherited from base)
 - All development tools from the base image
 
@@ -50,6 +52,8 @@ runner:latest
 - Node.js (v20 LTS)
 - Playwright (latest version)
 - Bun (latest version)
+- Java 17 JRE (headless)
+- Maestro CLI (v1.39.13)
 
 ### Playwright Browsers
 - Chromium (latest stable)

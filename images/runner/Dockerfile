@@ -100,6 +100,18 @@ ENV PLAYWRIGHT_BROWSERS_PATH=/usr/local/share/ms-playwright
 COPY scripts/basic-tools.sh /tmp/basic-tools.sh
 RUN chmod +x /tmp/basic-tools.sh && /tmp/basic-tools.sh && rm /tmp/basic-tools.sh
 
+# Install Java 17 (required for Maestro CLI)
+RUN apt-get update -y && \
+    apt-get install -y --no-install-recommends openjdk-17-jre-headless && \
+    rm -rf /var/lib/apt/lists/*
+
+# Install Maestro CLI
+ARG MAESTRO_VERSION=1.39.13
+RUN mkdir -p /opt/maestro && \
+    curl -fsSL -o /tmp/maestro.zip "https://github.com/mobile-dev-inc/maestro/releases/download/cli-${MAESTRO_VERSION}/maestro.zip" && \
+    unzip -q /tmp/maestro.zip -d /opt/ && \
+    rm /tmp/maestro.zip
+
 # Install GitHub CLI (gh) from official repository
 RUN curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg \
     && chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg \
@@ -174,7 +186,7 @@ WORKDIR /home/runner
 USER runner
 ENV HOME=/home/runner
 # Set PATH to include mise shims and local bin for non-interactive shells (like GitHub Actions)
-ENV PATH=/home/runner/.local/share/mise/shims:/home/runner/.local/bin:/home/runner/.bun/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+ENV PATH=/opt/maestro/bin:/home/runner/.local/share/mise/shims:/home/runner/.local/bin:/home/runner/.bun/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
 COPY --chown=runner:docker --from=build /actions-runner .
 COPY --from=build /usr/local/lib/docker/cli-plugins/docker-buildx /usr/local/lib/docker/cli-plugins/docker-buildx
