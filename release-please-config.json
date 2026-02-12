@@ -80,6 +80,10 @@
           "jsonpath": "$.version"
         }
       ]
+    },
+    "images/runner": {
+      "release-type": "simple",
+      "component": "runner"
     }
   }
 }
