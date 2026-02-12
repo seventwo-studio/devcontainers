@@ -53,6 +53,7 @@ All commits that should trigger a release **must** use a scoped conventional com
 | `mise-en-place` | Mise-en-place feature | `features/src/mise-en-place` |
 | `modern-shell` | Modern Shell feature | `features/src/modern-shell` |
 | `playwright` | Playwright feature | `features/src/playwright` |
+| `runner` | Runner image | `images/runner` |
 | `sandbox` | Sandbox feature | `features/src/sandbox` |
 | `seventwo-motd` | SevenTwo MOTD feature | `features/src/seventwo-motd` |
 | `template-base` | Base template | `templates/base` |
