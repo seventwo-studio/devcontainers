@@ -1,9 +1,9 @@
 {
-  "features/src/claude-code": "2.0.0",
+  "features/src/claude-code": "1.6.2",
   "features/src/mise-en-place": "2.4.0",
   "features/src/modern-shell": "1.7.0",
   "features/src/playwright": "2.0.0",
-  "features/src/sandbox": "3.1.0",
+  "features/src/sandbox": "3.0.2",
   "features/src/seventwo-motd": "1.0.0",
   "templates/base": "1.4.0",
   "images/runner": "1.1.0"
