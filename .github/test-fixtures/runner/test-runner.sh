@@ -136,6 +136,44 @@ for tool in "${tools[@]}"; do
 done
 
 echo ""
+
+# Test 6: Image Processing Libraries
+echo "Test 6: Testing image processing libraries"
+echo "-------------------------------------------"
+
+# Check vips (sharp dependency)
+if command -v vips &> /dev/null; then
+    echo "  ✓ vips is available ($(vips --version 2>&1 | head -1))"
+else
+    echo "  ✗ vips not found"
+    exit 1
+fi
+
+# Check ImageMagick
+if command -v convert &> /dev/null; then
+    echo "  ✓ imagemagick is available"
+else
+    echo "  ✗ imagemagick not found"
+    exit 1
+fi
+
+# Check git-lfs
+if command -v git-lfs &> /dev/null; then
+    echo "  ✓ git-lfs is available ($(git-lfs --version))"
+else
+    echo "  ✗ git-lfs not found"
+    exit 1
+fi
+
+# Check libvips shared library is linkable
+if pkg-config --exists vips 2>/dev/null; then
+    echo "  ✓ libvips pkg-config: $(pkg-config --modversion vips)"
+else
+    echo "  ✗ libvips pkg-config not found"
+    exit 1
+fi
+
+echo ""
 echo "=========================================="
 echo "All tests passed successfully! ✓"
 echo "=========================================="

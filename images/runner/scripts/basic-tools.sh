@@ -84,6 +84,26 @@ apt-get install -y \
     zip \
     zsync
 
+# Image processing libraries (sharp/libvips support and broad format coverage)
+# libvips-dev pulls in: libpng, libjpeg, libtiff, libgif, libwebp, fftw3, lcms2, exif, etc.
+apt-get install -y \
+    libvips-dev \
+    libvips-tools \
+    libheif-dev \
+    librsvg2-dev \
+    libopenjp2-7-dev \
+    libpoppler-glib-dev \
+    libraw-dev \
+    libcgif-dev \
+    libimagequant-dev \
+    imagemagick \
+    graphicsmagick \
+    libmagic-dev \
+    git-lfs
+
+# Initialize git-lfs
+git lfs install --system
+
 # Clean up
 apt-get clean
 rm -rf /var/lib/apt/lists/*
