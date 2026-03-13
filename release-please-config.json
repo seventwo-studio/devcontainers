@@ -88,6 +88,10 @@
     "images/runner": {
       "release-type": "simple",
       "component": "runner"
+    },
+    "images/macos-runner": {
+      "release-type": "simple",
+      "component": "macos-runner"
     }
   }
 }
