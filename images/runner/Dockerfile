@@ -5,6 +5,7 @@ ARG TARGETARCH
 ARG RUNNER_CONTAINER_HOOKS_VERSION=0.7.0
 ARG DOCKER_VERSION=27.1.1
 ARG BUILDX_VERSION=0.16.2
+ARG COMPOSE_VERSION=2.29.2
 
 USER root
 
@@ -33,7 +34,10 @@ RUN export RUNNER_ARCH=${TARGETARCH} \
     && mkdir -p /usr/local/lib/docker/cli-plugins \
     && curl -fLo /usr/local/lib/docker/cli-plugins/docker-buildx \
         "https://github.com/docker/buildx/releases/download/v${BUILDX_VERSION}/buildx-v${BUILDX_VERSION}.linux-${TARGETARCH}" \
-    && chmod +x /usr/local/lib/docker/cli-plugins/docker-buildx
+    && chmod +x /usr/local/lib/docker/cli-plugins/docker-buildx \
+    && curl -fLo /usr/local/lib/docker/cli-plugins/docker-compose \
+        "https://github.com/docker/compose/releases/download/v${COMPOSE_VERSION}/docker-compose-linux-${TARGETARCH}" \
+    && chmod +x /usr/local/lib/docker/cli-plugins/docker-compose
 
 # Playwright build stage - separate for optimal caching
 FROM ghcr.io/seventwo-studio/base:latest AS playwright
@@ -89,6 +93,11 @@ ENV DEBIAN_FRONTEND=noninteractive
 ENV RUNNER_MANUALLY_TRAP_SIG=1
 ENV ACTIONS_RUNNER_PRINT_LOG_TO_STDOUT=1
 ENV ImageOS=ubuntu22
+ENV RUNNER_TOOL_CACHE=/opt/hostedtoolcache
+ENV AGENT_TOOLSDIRECTORY=/opt/hostedtoolcache
+ENV RUNNER_WORKSPACE=/home/runner/work
+ENV RUNNER_TEMP=/home/runner/work/_temp
+ENV RUNNER_OS=Linux
 
 # Playwright configuration
 # Set the browsers path to a location that's readable by all users
@@ -128,6 +137,11 @@ RUN curl -fsSL "https://github.com/mikefarah/yq/releases/download/v${YQ_VERSION}
 # Install mise for runtime management
 RUN curl https://mise.run | sh && \
     mv $HOME/.local/bin/mise /usr/local/bin/mise
+
+# Setup tool cache directory and pre-seed with Node.js and Python
+# This enables actions/setup-node and actions/setup-python to use cached versions
+COPY scripts/setup-toolcache.sh /tmp/setup-toolcache.sh
+RUN chmod +x /tmp/setup-toolcache.sh && /tmp/setup-toolcache.sh && rm /tmp/setup-toolcache.sh
 
 # Install Bun runtime
 RUN curl -fsSL https://bun.sh/install | bash && \
@@ -175,6 +189,25 @@ RUN adduser --disabled-password --gecos "" --uid 1001 runner \
     && chown -R ${USERNAME}:${USERNAME} /home/zero/.cache /home/zero/.local \
     && chmod -R 777 /home/zero/.cache /home/zero/.local
 
+# Create GitHub Actions working directories
+RUN mkdir -p /home/runner/work/_temp \
+    && mkdir -p /home/runner/work/_actions \
+    && chown -R runner:runner /home/runner/work
+
+# Create runner .env and .path files (read by runner application on startup)
+RUN echo "RUNNER_TOOL_CACHE=/opt/hostedtoolcache" > /home/runner/.env \
+    && echo "AGENT_TOOLSDIRECTORY=/opt/hostedtoolcache" >> /home/runner/.env \
+    && echo "RUNNER_WORKSPACE=/home/runner/work" >> /home/runner/.env \
+    && echo "RUNNER_TEMP=/home/runner/work/_temp" >> /home/runner/.env \
+    && echo "RUNNER_OS=Linux" >> /home/runner/.env \
+    && echo "PLAYWRIGHT_BROWSERS_PATH=/usr/local/share/ms-playwright" >> /home/runner/.env \
+    && echo "ImageOS=ubuntu22" >> /home/runner/.env \
+    && echo "/opt/hostedtoolcache" > /home/runner/.path \
+    && echo "/opt/maestro/bin" >> /home/runner/.path \
+    && echo "/home/runner/.local/share/mise/shims" >> /home/runner/.path \
+    && echo "/home/runner/.local/bin" >> /home/runner/.path \
+    && chown runner:runner /home/runner/.env /home/runner/.path
+
 # Setup shell configurations for runner user (required for mise integration)
 COPY scripts/setup-runner-shell.sh /tmp/setup-runner-shell.sh
 RUN chmod +x /tmp/setup-runner-shell.sh && \
@@ -190,6 +223,7 @@ ENV PATH=/opt/maestro/bin:/home/runner/.local/share/mise/shims:/home/runner/.loc
 
 COPY --chown=runner:docker --from=build /actions-runner .
 COPY --from=build /usr/local/lib/docker/cli-plugins/docker-buildx /usr/local/lib/docker/cli-plugins/docker-buildx
+COPY --from=build /usr/local/lib/docker/cli-plugins/docker-compose /usr/local/lib/docker/cli-plugins/docker-compose
 
 USER root
 RUN install -o root -g root -m 755 docker/* /usr/bin/ && rm -rf docker
@@ -199,8 +233,15 @@ RUN install -o root -g root -m 755 docker/* /usr/bin/ && rm -rf docker
 # allowing us to set CUSTOM_ACTIONS_RESULTS_URL environment variable
 RUN sed -i 's/\x41\x00\x43\x00\x54\x00\x49\x00\x4F\x00\x4E\x00\x53\x00\x5F\x00\x52\x00\x45\x00\x53\x00\x55\x00\x4C\x00\x54\x00\x53\x00\x5F\x00\x55\x00\x52\x00\x4C\x00/\x41\x00\x43\x00\x54\x00\x49\x00\x4F\x00\x4E\x00\x53\x00\x5F\x00\x52\x00\x45\x00\x53\x00\x55\x00\x4C\x00\x54\x00\x53\x00\x5F\x00\x4F\x00\x52\x00\x4C\x00/g' /home/runner/bin/Runner.Worker.dll
 
-# Create an entrypoint that initializes sandbox before running actions
+# Create an entrypoint that sets arch-dependent env vars and initializes sandbox
 RUN echo '#!/bin/bash' > /usr/local/bin/runner-entrypoint && \
+    echo '# Set architecture-dependent env vars' >> /usr/local/bin/runner-entrypoint && \
+    echo 'if [ "$(uname -m)" = "x86_64" ]; then' >> /usr/local/bin/runner-entrypoint && \
+    echo '    export RUNNER_ARCH=X64' >> /usr/local/bin/runner-entrypoint && \
+    echo 'else' >> /usr/local/bin/runner-entrypoint && \
+    echo '    export RUNNER_ARCH=ARM64' >> /usr/local/bin/runner-entrypoint && \
+    echo 'fi' >> /usr/local/bin/runner-entrypoint && \
+    echo '' >> /usr/local/bin/runner-entrypoint && \
     echo '# Initialize sandbox if available' >> /usr/local/bin/runner-entrypoint && \
     echo 'if [ -x "/usr/local/bin/init-sandbox" ]; then' >> /usr/local/bin/runner-entrypoint && \
     echo '    /usr/local/bin/init-sandbox' >> /usr/local/bin/runner-entrypoint && \
