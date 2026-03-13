@@ -174,6 +174,129 @@ else
 fi
 
 echo ""
+
+# Test 7: Tool Cache Directory
+echo "Test 7: Testing tool cache directory"
+echo "-------------------------------------"
+
+if [ -d "/opt/hostedtoolcache" ]; then
+    echo "  ✓ /opt/hostedtoolcache exists"
+else
+    echo "  ✗ /opt/hostedtoolcache not found"
+    exit 1
+fi
+
+if [ -w "/opt/hostedtoolcache" ]; then
+    echo "  ✓ /opt/hostedtoolcache is writable"
+else
+    echo "  ✗ /opt/hostedtoolcache is not writable"
+    exit 1
+fi
+
+if [ "${RUNNER_TOOL_CACHE}" = "/opt/hostedtoolcache" ]; then
+    echo "  ✓ RUNNER_TOOL_CACHE is set correctly"
+else
+    echo "  ✗ RUNNER_TOOL_CACHE not set (got: ${RUNNER_TOOL_CACHE})"
+    exit 1
+fi
+
+# Check pre-seeded Node.js
+if ls /opt/hostedtoolcache/node/*/x64/.complete 1> /dev/null 2>&1 || \
+   ls /opt/hostedtoolcache/node/*/arm64/.complete 1> /dev/null 2>&1; then
+    echo "  ✓ Node.js pre-seeded in tool cache"
+else
+    echo "  ✗ Node.js not found in tool cache"
+    exit 1
+fi
+
+# Check pre-seeded Python
+if ls /opt/hostedtoolcache/Python/*/x64/.complete 1> /dev/null 2>&1 || \
+   ls /opt/hostedtoolcache/Python/*/arm64/.complete 1> /dev/null 2>&1; then
+    echo "  ✓ Python pre-seeded in tool cache"
+else
+    echo "  ✗ Python not found in tool cache"
+    exit 1
+fi
+
+echo ""
+
+# Test 8: Docker Compose
+echo "Test 8: Testing Docker Compose v2"
+echo "-----------------------------------"
+
+if docker compose version &> /dev/null; then
+    echo "  ✓ docker compose is available"
+    docker compose version
+else
+    echo "  ✗ docker compose not found"
+    exit 1
+fi
+
+echo ""
+
+# Test 9: GitHub Runner Environment Variables
+echo "Test 9: Testing GitHub runner environment"
+echo "-------------------------------------------"
+
+env_vars=("RUNNER_OS" "RUNNER_WORKSPACE" "RUNNER_TEMP" "RUNNER_TOOL_CACHE" "AGENT_TOOLSDIRECTORY")
+for var in "${env_vars[@]}"; do
+    if [ -n "${!var}" ]; then
+        echo "  ✓ $var=${!var}"
+    else
+        echo "  ✗ $var not set"
+        exit 1
+    fi
+done
+
+if [ -d "/home/runner/work/_temp" ]; then
+    echo "  ✓ /home/runner/work/_temp exists"
+else
+    echo "  ✗ /home/runner/work/_temp not found"
+    exit 1
+fi
+
+if [ -f "/home/runner/.env" ] && [ -f "/home/runner/.path" ]; then
+    echo "  ✓ .env and .path config files exist"
+else
+    echo "  ✗ .env or .path config files missing"
+    exit 1
+fi
+
+echo ""
+
+# Test 10: cmake
+echo "Test 10: Testing cmake"
+echo "-----------------------"
+
+if command -v cmake &> /dev/null; then
+    echo "  ✓ cmake is available"
+    cmake --version | head -1
+else
+    echo "  ✗ cmake not found"
+    exit 1
+fi
+
+echo ""
+
+# Test 11: System Python with pip
+echo "Test 11: Testing system Python with pip"
+echo "-----------------------------------------"
+
+if command -v python3 &> /dev/null; then
+    echo "  ✓ python3 is available ($(python3 --version))"
+else
+    echo "  ✗ python3 not found"
+    exit 1
+fi
+
+if command -v pip3 &> /dev/null; then
+    echo "  ✓ pip3 is available ($(pip3 --version 2>&1 | head -1))"
+else
+    echo "  ✗ pip3 not found"
+    exit 1
+fi
+
+echo ""
 echo "=========================================="
 echo "All tests passed successfully! ✓"
 echo "=========================================="
