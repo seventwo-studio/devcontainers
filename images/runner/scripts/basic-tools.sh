@@ -82,7 +82,8 @@ apt-get install -y \
     xvfb \
     xz-utils \
     zip \
-    zsync
+    zsync \
+    zstd
 
 # Image processing libraries (sharp/libvips support and broad format coverage)
 # libvips-dev pulls in: libpng, libjpeg, libtiff, libgif, libwebp, fftw3, lcms2, exif, etc.

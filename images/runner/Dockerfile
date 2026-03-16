@@ -2,9 +2,9 @@ FROM ghcr.io/seventwo-studio/base:latest AS build
 
 ARG TARGETOS
 ARG TARGETARCH
-ARG RUNNER_CONTAINER_HOOKS_VERSION=0.7.0
-ARG DOCKER_VERSION=27.1.1
-ARG BUILDX_VERSION=0.16.2
+ARG RUNNER_CONTAINER_HOOKS_VERSION=0.8.1
+ARG DOCKER_VERSION=29.3.0
+ARG BUILDX_VERSION=0.32.1
 
 USER root
 
@@ -106,7 +106,7 @@ RUN apt-get update -y && \
     rm -rf /var/lib/apt/lists/*
 
 # Install Maestro CLI
-ARG MAESTRO_VERSION=1.39.13
+ARG MAESTRO_VERSION=2.3.0
 RUN mkdir -p /opt/maestro && \
     curl -fsSL -o /tmp/maestro.zip "https://github.com/mobile-dev-inc/maestro/releases/download/cli-${MAESTRO_VERSION}/maestro.zip" && \
     unzip -q /tmp/maestro.zip -d /opt/ && \
@@ -121,7 +121,7 @@ RUN curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | d
     && rm -rf /var/lib/apt/lists/*
 
 # Install yq (YAML processor) via binary download
-ARG YQ_VERSION=4.48.1
+ARG YQ_VERSION=4.52.4
 RUN curl -fsSL "https://github.com/mikefarah/yq/releases/download/v${YQ_VERSION}/yq_linux_$(dpkg --print-architecture)" -o /usr/local/bin/yq \
     && chmod +x /usr/local/bin/yq
 
