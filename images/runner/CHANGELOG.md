@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/seventwo-studio/devcontainers/compare/runner-v1.1.0...runner-v1.2.0) (2026-03-16)
+
+
+### Features
+
+* **runner:** update dependencies and add zstd for cache support ([cb644aa](https://github.com/seventwo-studio/devcontainers/commit/cb644aa057dceb48b4ad2a50b38775021e0ac44a))
+
 ## [1.1.0](https://github.com/seventwo-studio/devcontainers/compare/runner-v1.0.0...runner-v1.1.0) (2026-02-12)
 
 
