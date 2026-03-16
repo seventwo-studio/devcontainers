@@ -5,6 +5,10 @@ on:
   schedule:
     # Run nightly at 3am UTC
     - cron: "0 3 * * *"
+  push:
+    tags:
+      - "base-v*"
+      - "runner-v*"
 
 jobs:
   # Build base Docker image
