@@ -20,6 +20,7 @@ apt-get install -y \
     bison \
     brotli \
     bzip2 \
+    cmake \
     coreutils \
     curl \
     dbus \
@@ -59,6 +60,8 @@ apt-get install -y \
     pkg-config \
     pollinate \
     python-is-python3 \
+    python3-pip \
+    python3-venv \
     rpm \
     rsync \
     shellcheck \
