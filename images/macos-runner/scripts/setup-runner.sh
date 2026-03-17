@@ -17,7 +17,7 @@ case "$ARCH" in
 esac
 
 # Fetch latest runner version
-RUNNER_VERSION=$(curl -s https://api.github.com/repos/actions/runner/releases/latest | grep '"tag_name"' | sed -E 's/.*"v([^"]+)".*/\1/')
+RUNNER_VERSION=$(curl -fsSL https://api.github.com/repos/actions/runner/releases/latest | jq -r '.tag_name' | sed 's/^v//')
 echo "Latest runner version: $RUNNER_VERSION"
 
 # Create runner directory

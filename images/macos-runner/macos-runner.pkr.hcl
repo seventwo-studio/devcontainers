@@ -30,8 +30,7 @@ variable "vm_name" {
 }
 
 source "tart-cli" "macos-runner" {
-  from_ipsw    = var.tart_base_image == "ipsw" ? "latest" : null
-  from_iso     = []
+  vm_base_name = var.tart_base_image
   vm_name      = "${var.vm_name}"
   cpu_count    = 4
   memory_gb    = 8
@@ -40,18 +39,13 @@ source "tart-cli" "macos-runner" {
   ssh_password = "admin"
   ssh_timeout  = "120s"
 
-  // Pull from OCI registry when not building from IPSW
   create_grace_time = "30s"
 }
 
 build {
   name = "macos-runner"
 
-  source "source.tart-cli.macos-runner" {
-    // Override from_ipsw to null when using a registry image
-    from_ipsw = null
-    vm_base_name = var.tart_base_image
-  }
+  sources = ["source.tart-cli.macos-runner"]
 
   // Upload provisioning scripts
   provisioner "file" {

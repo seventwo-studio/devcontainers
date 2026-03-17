@@ -16,7 +16,7 @@ echo "Installing development tools..."
 # --- mise (polyglot runtime manager) ---
 if ! command -v mise &>/dev/null; then
     echo "Installing mise..."
-    curl https://mise.run | sh
+    curl -fsSL https://mise.run | sh
 fi
 
 # Add mise to PATH for this script

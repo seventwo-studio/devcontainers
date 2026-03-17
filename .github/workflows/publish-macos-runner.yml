@@ -11,6 +11,9 @@ on:
   schedule:
     # Run weekly on Sundays at 3am UTC (macOS builds are slower, less frequent)
     - cron: "0 3 * * 0"
+  push:
+    tags:
+      - "macos-runner-v*"
 
 jobs:
   build-macos-runner:
