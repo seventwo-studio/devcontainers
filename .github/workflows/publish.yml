@@ -5,14 +5,17 @@ on:
   schedule:
     # Run nightly at 3am UTC
     - cron: "0 3 * * *"
-  release:
-    types: [published]
+  workflow_run:
+    workflows: ["Release Please"]
+    types: [completed]
+    branches: [main]
 
 jobs:
   # Build base Docker image
   publish-base:
     name: Build and Push base Docker Image
     runs-on: ubuntu-latest
+    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
     permissions:
       contents: read
       packages: write
