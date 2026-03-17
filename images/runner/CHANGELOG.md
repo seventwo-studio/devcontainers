@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.0](https://github.com/seventwo-studio/devcontainers/compare/runner-v1.2.0...runner-v1.3.0) (2026-03-17)
+
+
+### Features
+
+* **runner:** align with GitHub-hosted runner environment ([6457858](https://github.com/seventwo-studio/devcontainers/commit/64578588a9cc95f3845dbcbf15bc42307ca4daf5))
+
 ## [1.2.0](https://github.com/seventwo-studio/devcontainers/compare/runner-v1.1.0...runner-v1.2.0) (2026-03-16)
 
 
