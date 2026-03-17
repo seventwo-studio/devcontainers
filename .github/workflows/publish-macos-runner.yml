@@ -1,0 +1,73 @@
+name: Publish macOS Runner Image
+
+on:
+  workflow_dispatch:
+    inputs:
+      base_image:
+        description: "Base Tart image"
+        required: false
+        default: "ghcr.io/cirruslabs/macos-sequoia-xcode:latest"
+        type: string
+  schedule:
+    # Run weekly on Sundays at 3am UTC (macOS builds are slower, less frequent)
+    - cron: "0 3 * * 0"
+  push:
+    tags:
+      - "macos-runner-v*"
+
+jobs:
+  build-macos-runner:
+    name: Build and Push macOS Runner Image
+    runs-on: macos-latest-xlarge # Apple Silicon runner
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Tart
+        run: brew install cirruslabs/cli/tart
+
+      - name: Install Packer
+        run: |
+          brew tap hashicorp/tap
+          brew install hashicorp/tap/packer
+
+      - name: Initialize Packer
+        working-directory: images/macos-runner
+        run: packer init macos-runner.pkr.hcl
+
+      - name: Read version
+        id: version
+        run: echo "version=$(cat images/macos-runner/version.txt | tr -d '[:space:]')" >> "$GITHUB_OUTPUT"
+
+      - name: Build macOS Runner Image
+        working-directory: images/macos-runner
+        run: |
+          packer build \
+            -var "tart_base_image=${{ inputs.base_image || 'ghcr.io/cirruslabs/macos-sequoia-xcode:latest' }}" \
+            -var "vm_name=seventwo-macos-runner" \
+            macos-runner.pkr.hcl
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Push to GHCR (OCI)
+        run: |
+          tart push seventwo-macos-runner \
+            ghcr.io/seventwo-studio/macos-runner:latest
+
+          tart push seventwo-macos-runner \
+            ghcr.io/seventwo-studio/macos-runner:${{ steps.version.outputs.version }}
+
+          tart push seventwo-macos-runner \
+            ghcr.io/seventwo-studio/macos-runner:sha-${GITHUB_SHA::7}
+
+      - name: Cleanup
+        if: always()
+        run: tart delete seventwo-macos-runner || true
