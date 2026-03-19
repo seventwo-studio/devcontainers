@@ -309,7 +309,6 @@ jobs:
       matrix:
         image:
           - base
-          - runner
     steps:
       - name: Checkout
         uses: actions/checkout@v6

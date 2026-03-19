@@ -84,10 +84,6 @@
     "images/base": {
       "release-type": "simple",
       "component": "base"
-    },
-    "images/runner": {
-      "release-type": "simple",
-      "component": "runner"
     }
   }
 }

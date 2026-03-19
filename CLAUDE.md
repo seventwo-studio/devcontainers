@@ -19,7 +19,6 @@ The repository consists of three main component types:
 
 2. **Images** (`/images/`): Base Docker images
    - `base`: Main development container with essential dev tools
-   - `runner`: GitHub Actions runner (extends base)
    - `settings-gen`: Settings generation utility
 
 3. **Templates** (`/templates/`): Pre-configured devcontainer setups
@@ -54,7 +53,6 @@ All commits that should trigger a release **must** use a scoped conventional com
 | `mise-en-place` | Mise-en-place feature | `features/src/mise-en-place` |
 | `modern-shell` | Modern Shell feature | `features/src/modern-shell` |
 | `playwright` | Playwright feature | `features/src/playwright` |
-| `runner` | Runner image | `images/runner` |
 | `sandbox` | Sandbox feature | `features/src/sandbox` |
 | `seventwo-motd` | SevenTwo MOTD feature | `features/src/seventwo-motd` |
 | `template-base` | Base template | `templates/base` |
@@ -86,7 +84,8 @@ When changing a feature that is used by a template, include an additional scoped
 
 ### Publishing
 - **Features and templates** are published automatically when release-please merges a release PR and creates a GitHub Release (triggered by conventional commits to `main`)
-- **Docker images** (base, runner, settings-gen) are built on a nightly schedule (3am UTC) and via manual workflow dispatch
+- **Docker images** (base, settings-gen) are built on a nightly schedule (3am UTC) and via manual workflow dispatch
+- **Runner image** has been moved to its own repo: `seventwo-studio/runner`
 - Pre-built devcontainer images for templates are also built on the nightly/manual schedule
 
 ### Adding Components

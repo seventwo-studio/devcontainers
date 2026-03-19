@@ -1,5 +1,0 @@
-appId: localhost
-url: http://localhost:8081
----
-- launchApp
-- assertVisible: "Expo Runner Test"
