@@ -99,6 +99,20 @@ ENV RUNNER_WORKSPACE=/home/runner/work
 ENV RUNNER_TEMP=/home/runner/work/_temp
 ENV RUNNER_OS=Linux
 
+# Cache directories — XDG base and tool-specific overrides
+# These point tools at /home/runner/.cache which can be backed by
+# a persistent volume (hostPath on ARC) or used as ephemeral cache
+ENV XDG_CACHE_HOME=/home/runner/.cache
+ENV MISE_CACHE_DIR=/home/runner/.cache/mise
+ENV MISE_DATA_DIR=/home/runner/.cache/mise/data
+ENV BUN_INSTALL_CACHE_DIR=/home/runner/.cache/bun
+ENV npm_config_cache=/home/runner/.cache/npm
+ENV npm_config_store_dir=/home/runner/.cache/pnpm-store
+ENV CARGO_HOME=/home/runner/.cache/cargo
+ENV RUSTUP_HOME=/home/runner/.cache/rustup
+ENV GRADLE_USER_HOME=/home/runner/.cache/gradle
+ENV CP_HOME_DIR=/home/runner/.cache/cocoapods
+
 # Playwright configuration
 # Set the browsers path to a location that's readable by all users
 # Pre-installed browsers will be copied here, and the directory is made writable
@@ -202,6 +216,16 @@ RUN echo "RUNNER_TOOL_CACHE=/opt/hostedtoolcache" > /home/runner/.env \
     && echo "RUNNER_OS=Linux" >> /home/runner/.env \
     && echo "PLAYWRIGHT_BROWSERS_PATH=/usr/local/share/ms-playwright" >> /home/runner/.env \
     && echo "ImageOS=ubuntu22" >> /home/runner/.env \
+    && echo "XDG_CACHE_HOME=/home/runner/.cache" >> /home/runner/.env \
+    && echo "MISE_CACHE_DIR=/home/runner/.cache/mise" >> /home/runner/.env \
+    && echo "MISE_DATA_DIR=/home/runner/.cache/mise/data" >> /home/runner/.env \
+    && echo "BUN_INSTALL_CACHE_DIR=/home/runner/.cache/bun" >> /home/runner/.env \
+    && echo "npm_config_cache=/home/runner/.cache/npm" >> /home/runner/.env \
+    && echo "npm_config_store_dir=/home/runner/.cache/pnpm-store" >> /home/runner/.env \
+    && echo "CARGO_HOME=/home/runner/.cache/cargo" >> /home/runner/.env \
+    && echo "RUSTUP_HOME=/home/runner/.cache/rustup" >> /home/runner/.env \
+    && echo "GRADLE_USER_HOME=/home/runner/.cache/gradle" >> /home/runner/.env \
+    && echo "CP_HOME_DIR=/home/runner/.cache/cocoapods" >> /home/runner/.env \
     && echo "/opt/hostedtoolcache" > /home/runner/.path \
     && echo "/opt/maestro/bin" >> /home/runner/.path \
     && echo "/home/runner/.local/share/mise/shims" >> /home/runner/.path \
