@@ -5,31 +5,32 @@ on:
   schedule:
     # Run nightly at 3am UTC
     - cron: "0 3 * * *"
-  push:
-    tags:
-      - "base-v*"
-      - "runner-v*"
+  workflow_run:
+    workflows: ["Release Please"]
+    types: [completed]
+    branches: [main]
 
 jobs:
   # Build base Docker image
   publish-base:
     name: Build and Push base Docker Image
     runs-on: ubuntu-latest
+    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
     permissions:
       contents: read
       packages: write
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
+        uses: docker/setup-qemu-action@v4
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@v4
 
       - name: Login to GitHub Container Registry
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
@@ -41,7 +42,7 @@ jobs:
 
       - name: Generate image metadata
         id: meta
-        uses: docker/metadata-action@v5
+        uses: docker/metadata-action@v6
         with:
           images: ghcr.io/seventwo-studio/base
           tags: |
@@ -50,7 +51,7 @@ jobs:
             type=sha
 
       - name: Build and Push base
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v7
         with:
           context: ./images/base
           push: true
@@ -62,131 +63,6 @@ jobs:
             type=registry,ref=ghcr.io/seventwo-studio/base:latest
           cache-to: type=registry,ref=ghcr.io/seventwo-studio/base:buildcache,mode=max
 
-  # Build runner Docker image
-  publish-runner:
-    name: Build and Push runner Docker Image
-    runs-on: ubuntu-latest
-    needs: [publish-base]
-    permissions:
-      contents: read
-      packages: write
-    steps:
-      - name: Free Disk Space
-        uses: jlumbroso/free-disk-space@main
-        with:
-          tool-cache: false
-          android: true
-          dotnet: true
-          haskell: true
-          large-packages: true
-          docker-images: false
-          swap-storage: true
-
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Read version
-        id: version
-        run: echo "version=$(cat images/runner/version.txt | tr -d '[:space:]')" >> "$GITHUB_OUTPUT"
-
-      - name: Generate image metadata
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: ghcr.io/seventwo-studio/runner
-          tags: |
-            type=raw,value=latest
-            type=raw,value=${{ steps.version.outputs.version }}
-            type=sha
-
-      - name: Build and Push runner
-        uses: docker/build-push-action@v5
-        with:
-          context: ./images/runner
-          push: true
-          platforms: linux/amd64,linux/arm64
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          cache-from: |
-            type=registry,ref=ghcr.io/seventwo-studio/runner:buildcache
-            type=registry,ref=ghcr.io/seventwo-studio/runner:latest
-          cache-to: type=registry,ref=ghcr.io/seventwo-studio/runner:buildcache,mode=max
-
-  # Test runner Docker image
-  test-runner:
-    name: Test runner Docker Image
-    runs-on: ubuntu-latest
-    needs: [publish-runner]
-    permissions:
-      contents: read
-      packages: read
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Pull runner image
-        run: docker pull ghcr.io/seventwo-studio/runner:latest
-
-      - name: Run integration tests
-        run: |
-          docker run --rm \
-            -v ${{ github.workspace }}/.github/test-fixtures/runner:/workspace \
-            -w /workspace \
-            -e CI=true \
-            ghcr.io/seventwo-studio/runner:latest \
-            bash -c "chmod +x ./test-runner.sh && ./test-runner.sh"
-
-  # Test runner Docker image (Expo + Maestro)
-  test-runner-expo:
-    name: Test runner Docker Image (Expo + Maestro)
-    runs-on: ubuntu-latest
-    needs: [publish-runner]
-    permissions:
-      contents: read
-      packages: read
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Pull runner image
-        run: docker pull ghcr.io/seventwo-studio/runner:latest
-
-      - name: Run Expo + Maestro integration tests
-        run: |
-          docker run --rm \
-            -v ${{ github.workspace }}/.github/test-fixtures/runner-expo:/workspace \
-            -w /workspace \
-            -e CI=true \
-            ghcr.io/seventwo-studio/runner:latest \
-            bash -c "chmod +x ./test-expo-runner.sh && ./test-expo-runner.sh"
-
   # Build settings-gen Docker image
   publish-settings-gen:
     name: Build and Push settings-gen Docker Image
@@ -196,16 +72,16 @@ jobs:
       packages: write
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
+        uses: docker/setup-qemu-action@v4
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@v4
 
       - name: Login to GitHub Container Registry
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
@@ -213,7 +89,7 @@ jobs:
 
       - name: Generate image metadata
         id: meta
-        uses: docker/metadata-action@v5
+        uses: docker/metadata-action@v6
         with:
           images: ghcr.io/seventwo-studio/settings-gen
           tags: |
@@ -221,7 +97,7 @@ jobs:
             type=sha
 
       - name: Build and Push settings-gen
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v7
         with:
           context: ./images/settings-gen
           push: true
@@ -248,13 +124,13 @@ jobs:
       packages: write
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@v4
 
       - name: Login to GitHub Container Registry
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
