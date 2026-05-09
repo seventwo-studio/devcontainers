@@ -1,0 +1,6 @@
+# Packer
+packer_cache/
+*.pkr.hcl.lock.hcl
+
+# Tart VMs
+*.tart/
